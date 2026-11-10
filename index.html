@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VCTRS — Storefront Preview</title>
+<title>VCTRS — Storefront</title>
 <link rel="icon" href="assets/v-star.svg" type="image/svg+xml">
 <link rel="stylesheet" href="shop-panels.css?v=4">
 <link rel="stylesheet" href="vault-transition.css?v=1">
@@ -19,11 +19,7 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 [hidden]{display:none!important}
 #store{--storebar-height:63px}
 .store-top{position:sticky;top:0;z-index:3}
-.tools{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:8px;background:#201f1c;border-bottom:1px solid var(--rule)}
-.tools button{border:1px solid transparent;background:transparent;padding:5px 10px;font-size:12px;border-radius:3px;white-space:nowrap}
-.tools .replay{border-color:var(--rule);color:var(--muted)}
 .kicker{color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
-.tools .kicker{color:var(--muted);font-size:10px;margin:0 5px}
 .wrap{width:min(1120px,calc(100% - 48px));margin-inline:auto}
 .storebar{min-height:var(--storebar-height);display:flex;align-items:center}
 .logo{display:block;flex:none;width:94px;height:35px;background:var(--paper);mask:url('assets/wordmark.svg') center/contain no-repeat}
@@ -65,7 +61,6 @@ h1{font:900 clamp(56px,11vw,142px)/.84 Arial,sans-serif;letter-spacing:-.085em;t
 .opener{position:fixed;inset:0;z-index:5;background:#000;transition:opacity .22s ease;display:grid;place-items:center}
 .opener.fade{opacity:0;pointer-events:none}
 .opener iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
-.opener button{position:absolute;right:18px;bottom:18px;padding:8px 12px;font-size:12px;background:#17130dbd;border:1px solid #fff8}
 body.opening{overflow:hidden}
 @media(max-width:650px){
  .wrap{width:calc(100% - 28px)}
@@ -79,10 +74,8 @@ body.opening{overflow:hidden}
  .card[data-product=hat] .photo{aspect-ratio:4/3}
  .detail{display:block;padding:10px 8px 13px}
 }
-@media(max-width:335px){.tools .kicker{display:none}}
 @media(prefers-reduced-motion:reduce){.opener{transition:none}}
 
-.tools a{font-size:12px;text-decoration:none;padding:5px 8px;color:var(--gold)}
 .product-open{display:block;width:100%;padding:0;border:0;background:transparent;text-align:left}
 .product-open:hover .photo{filter:brightness(1.08)}
 .product-open:focus-visible{outline-offset:-3px}
@@ -92,11 +85,6 @@ body.opening{overflow:hidden}
 .action-arrow{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .product-open:is(:hover,:focus-visible) .view{border-color:var(--gold)}
 .product-open:is(:hover,:focus-visible) .view-icon{background:var(--gold);border-color:var(--gold);color:#21180e}
-@media(max-width:650px){
- .tools{gap:3px}
- .tools button,.tools a{padding-inline:6px}
- .tools .kicker{display:none}
-}
 </style>
 </head>
 <body>
@@ -105,11 +93,6 @@ body.opening{overflow:hidden}
 </svg>
 <div id="store">
   <div class="store-top">
-    <aside class="tools" aria-label="Storefront preview controls">
-      <span class="kicker">Preview</span>
-      <button type="button" class="replay">Replay opener</button>
-      <a id="device-preview" href="compare.html">Phone / Laptop</a>
-    </aside>
     <div class="cart-rail wrap">
       <button class="floating-cart" id="floating-cart" type="button" aria-haspopup="dialog" aria-controls="cart-dialog">
         <span class="floating-cart-label">
@@ -262,7 +245,6 @@ body.opening{overflow:hidden}
   </div>
 </dialog>
 <div class="opener" hidden>
-  <button type="button">Skip opener</button>
 </div>
 <script>
 const opener = document.querySelector('.opener');
@@ -270,20 +252,15 @@ const messageOrigin = location.protocol === 'file:' ? '*' : location.origin;
 const openerOrigin = location.protocol === 'file:' ? 'null' : location.origin;
 const campaign = document.querySelector('#campaign');
 const campaignPlay = document.querySelector('.campaign-play');
-const tools = document.querySelector('.tools');
 const store = document.querySelector('#store');
-const replay = document.querySelector('.replay');
-const skip = opener.querySelector('button');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 const inDevicePreview = new URLSearchParams(location.search).has('device');
 let endingTimer;
 let stallTimer;
-let restoreFocus;
 let openerFrame;
 let campaignAttempt = 0;
 let campaignStartTimer;
 
-const deviceLink = document.querySelector('#device-preview');
 const archiveLink = document.querySelector('.vault-link');
 if (inDevicePreview) archiveLink.href = 'vault-preview/index.html?device=1&v=2#vault';
 archiveLink.addEventListener('click', event => {
@@ -319,19 +296,17 @@ function revealStore(){
   clearTimeout(stallTimer);
   opener.classList.add('fade');
   document.body.classList.remove('opening');
-  tools.inert = store.inert = false;
+  store.inert = false;
   endingTimer = setTimeout(() => {
     opener.hidden = true;
     openerFrame?.remove();
     openerFrame = undefined;
   }, 230);
-  if (restoreFocus || document.activeElement === skip) replay.focus({preventScroll:true});
   playCampaign();
 }
-function playOpening(fromButton){
+function playOpening(){
   clearTimeout(endingTimer);
   clearTimeout(stallTimer);
-  restoreFocus = fromButton;
   window.scrollTo(0,0);
   campaignAttempt++;
   hideCampaignPlay();
@@ -339,8 +314,7 @@ function playOpening(fromButton){
   opener.hidden = false;
   opener.classList.remove('fade');
   document.body.classList.add('opening');
-  tools.inert = store.inert = true;
-  if (fromButton) skip.focus({preventScroll:true});
+  store.inert = true;
   openerFrame?.remove();
   openerFrame = document.createElement('iframe');
   openerFrame.title = 'VCTRS opening film';
@@ -359,10 +333,7 @@ window.addEventListener('message', event => {
     revealStore();
   }
 });
-skip.addEventListener('click',revealStore);
-replay.addEventListener('click',() => playOpening(true));
-if (inDevicePreview) deviceLink.hidden = true;
-if (!reducedMotion.matches && !inDevicePreview && location.hash !== '#previous-drops') playOpening(false);
+if (!reducedMotion.matches && !inDevicePreview && location.hash !== '#previous-drops') playOpening();
 else playCampaign();
 </script>
 <script src="shop.js?v=5"></script>
