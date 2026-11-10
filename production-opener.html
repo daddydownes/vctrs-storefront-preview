@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+  <meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>VCTRS opening</title>
+  <!-- Opening stage extracted from the live VCTRS release; the shop owns its handoff. -->
+  <style>
+  :root{
+    --ink:#0b0a08; --ink-2:#14120e; --bone:#efe9dc; --bone-dim:#b9b0a0;
+    --gold:#d4af5f; --gold-hot:#f0d492; --line:rgba(212,175,95,.25);
+  }
+  body{background:var(--ink); color:var(--bone); font-family:Georgia,'Times New Roman',serif; margin:0;
+    -webkit-text-size-adjust:100%; text-size-adjust:100%;
+    -webkit-tap-highlight-color:transparent} /* kill the blue-grey flash mobile Chrome paints on every tapped control */
+  .stage{position:sticky; top:0; z-index:0; height:100vh; overflow:hidden; background:var(--ink);
+    width:100vw; isolation:isolate;outline:none}
+  video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block}
+  .wash{position:absolute; inset:0; pointer-events:none; background:
+    linear-gradient(to bottom, rgba(11,10,8,.72), rgba(11,10,8,.12) 30%, rgba(11,10,8,.12) 65%, rgba(11,10,8,.88))}
+
+  .hud{position:absolute; inset:0; pointer-events:none; display:flex; flex-direction:column;
+    justify-content:space-between; padding:clamp(20px,4vw,48px); z-index:2}
+  .hud-top{display:flex; justify-content:flex-end; align-items:flex-start; letter-spacing:.28em;
+    font-size:12px; color:var(--gold); text-transform:uppercase}
+  /* brand mark — the IG profile logo, avatar-style with a gold ring */
+  .brand-mark{width:46px; height:46px; border-radius:50%; display:block;
+    border:1px solid rgba(212,175,95,.55); box-shadow:0 0 18px rgba(0,0,0,.5)}
+  /* absolutely centred — the hud's flex column lost its bottom row, so flex
+     spacing alone would sink the title below the middle */
+  .title-block{text-align:center; position:absolute; left:50%; top:50%;
+    transform:translate(-50%,-50%); width:max-content; max-width:92vw;
+    transition:opacity .8s ease}
+  /* min low enough that the wordmark stays ONE line down to 320px-wide screens */
+  h1{font-size:clamp(30px,11vw,128px); font-weight:400; letter-spacing:.14em; margin:0;
+    text-shadow:0 2px 40px rgba(0,0,0,.6); white-space:nowrap}
+  h1 .v{color:var(--gold-hot)}
+
+  /* the 1:1 traced logo mark (V + star), set into the wordmarks in gold.
+     Height: V body is 1/1.396 of the mark; 1.09em = V ~13% over cap height. */
+  .vmark{height:1.09em; width:auto; display:inline-block; vertical-align:baseline;
+    color:var(--gold-hot); margin-right:.1em;
+    filter:drop-shadow(0 0 .18em rgba(240,212,146,.35))}
+  h1 .vmark{vertical-align:-0.04em}  /* film wordmark: optical baseline match */
+  .vt .vmark{vertical-align:-0.04em} /* vault title: same slight drop */
+
+  /* film-end logo handoff: the film's last act is a black card with the white
+     V+star. The site's own traced mark is laid EXACTLY over it (video px mapped
+     through object-fit:cover — placeFilmLogo), then tinted white → gold: the
+     film's logo becomes ours, and the rising black tide carries it into CLOSED. */
+  /* once the card lands, a true-#000 cover fades over the whole video — the
+     <video> element's black renders slightly LIFTED on many screens, so only a
+     real #000 layer makes the card match the site's deep black exactly. The
+     film's white V hands to a DOM white V (white-on-white, invisible), then gold
+     POURS down the mark — that pour IS the white→gold handoff (Liquid gold descent). */
+  .card-cover{position:absolute; inset:0; display:none; opacity:0;
+    background:#000; pointer-events:none}
+  .film-logo{position:absolute; display:none; opacity:0; pointer-events:none; z-index:10} /* above .stage-dim (z9): after the film the mark RIDES the wall out of frame at full gold — it is never dimmed */
+  .film-logo .mk{position:absolute; inset:0}
+  .film-logo .mk-gold{color:var(--gold-hot)}   /* the metal, uncovered by the pour */
+  .film-logo .mk-white{color:#fff}              /* the film's white V, erased top→tip */
+  .film-logo .vmark{height:100%; width:100%; color:inherit; margin:0}
+  /* the mark's glow is driven per-tick on #filmLogo (JS) so it can be ABSENT at the
+     film-V seam and rise only with the gold pour — matches the film's un-glowed white */
+  /* the card IS the closing title — don't bring the wordmark back over it
+     (.done.cardend: must outrank the .stage.done opacity:1 rule below) */
+  .stage.done.cardend .title-block{opacity:0}
+
+  /* post-surface "light under the door": the vault's glow seeping along the
+     bottom edge + a 1px gold thread dripping from the V into it.
+     LAW 2: solid hairlines + box-shadow glow only — no gradient fills. */
+  /* the black tide, as a compositor-only layer. This used to be a CSS filter on
+     .stage — which contains the <video>, so every scroll tick pushed the film
+     frame through a filter pass and repainted a full-viewport layer, in the
+     busiest frame budget on the page. z-index:9 clears every child of .stage
+     (nothing in there declares above 2) so the dim covers exactly what the
+     filter did, including the gold mark during the handoff. */
+  .stage-dim{position:absolute; inset:0; background:#000; opacity:0; pointer-events:none; z-index:9}
+
+
+  /* letter-stagger wordmark reveal (idea 06) — spans built in JS, delays inline;
+     the .vwrap span makes the traced mark ride the same reveal as a letter */
+  .stagger .l{display:inline-block; opacity:0}
+  .stagger.reveal .l{animation:letterUp .7s cubic-bezier(.2,.9,.3,1) forwards}
+  /* V-first intro: the pour copy stacked exactly on the base mark inside .vslot.
+     Sized/positioned by vMeasure() to the BASE svg's measured rect — height:100%
+     of the slot span was ~16% too tall (the span's line box carries the font
+     strut), which painted a second, offset V behind the mark. opacity:0 until
+     JS drives it, so reduced-motion (where vRender never runs) can't show it. */
+  .vslot{position:relative}
+  /* Safari can expose the rectangular backing surface of a drop-shadow when a
+     filtered SVG wrapper is scaled while its pour copy is being masked. Keep
+     the opening mark crisp and paint its light on a separate, generously sized
+     layer whose pixels are already transparent before every outer edge. */
+  .vslot .vmark{filter:none; overflow:visible}
+  .intro-v-halo{position:absolute; left:50%; top:50%; z-index:1; pointer-events:none;
+    width:min(112vw,720px); height:min(74vh,620px); border-radius:50%; opacity:0;
+    transform:translate(-50%,-50%); background:radial-gradient(ellipse at center,
+      rgba(240,212,146,.52) 0%, rgba(240,212,146,.18) 24%,
+      rgba(240,212,146,.045) 52%, rgba(240,212,146,0) 78%)}
+  .stage.playing:not(.opening-crossfade) .intro-v-halo,.stage.done .intro-v-halo{opacity:0!important}
+  .vmark.pour{position:absolute; left:0; top:0; height:100%; width:auto; margin:0; filter:none; opacity:0}
+  @keyframes letterUp{from{opacity:0; transform:translateY(.35em); filter:blur(6px)}
+    to{opacity:1; transform:none; filter:none}}
+  .rule{width:72px; height:1px; background:var(--gold); margin:22px auto 0; opacity:.8}
+
+  /* states */
+  @keyframes pulse{50%{opacity:.35}}
+  .stage.playing .title-block{opacity:0}
+  .stage.playing.opening-crossfade .title-block{opacity:1}
+  .stage.done .title-block{opacity:1}
+  .stage{background:#000}
+  .stage #film{opacity:0;transition:opacity 320ms ease}
+  .stage.playing #film,.stage.done #film{opacity:1}
+  .stage:not(.playing):not(.done) .wash{visibility:hidden}
+  .stage .hud-top{visibility:hidden}
+  /* A separate silhouette paints the light; the sharp, masked V is unfiltered. */
+  .intro-v-halo{background:none;border-radius:0;transform:none;overflow:visible}
+  .intro-v-halo svg{display:block;width:100%;height:100%;overflow:visible}
+  @media(prefers-reduced-motion:reduce){.stage #film{transition:none}.vault{touch-action:pinch-zoom}}
+  html,body{margin:0;overflow:hidden;background:#000}
+  @supports(height:100dvh){.stage{height:100dvh}}
+  @media(prefers-reduced-motion:reduce){.stagger .l{animation:none}}
+  </style>
+</head>
+<body>
+<div class="stage" id="stage" tabindex="-1" role="region" aria-label="VCTRS opening">
+  <video id="film" muted playsinline preload="auto" aria-hidden="true" src="assets/opening.mp4" poster="assets/opening.jpg"></video>
+  <div class="wash"></div>
+  <div class="card-cover" id="cardCover" aria-hidden="true"></div>
+  <div class="intro-v-halo" id="introVHalo" aria-hidden="true"><svg viewBox="170.4 94.8 295.5 357.7" aria-hidden="true" focusable="false">
+    <defs>
+    <linearGradient id="introVEmission" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0d492"/>
+      <stop id="introGlowFront" offset="0" stop-color="#f0d492"/>
+      <stop id="introGlowTail" offset="0" stop-color="#f0d492" stop-opacity="0"/>
+      <stop offset="1" stop-color="#f0d492" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="introVLight" x="-90%" y="-75%" width="280%" height="250%" color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="edge"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="bloom"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="42" result="air"/>
+      <feMerge><feMergeNode in="air"/><feMergeNode in="bloom"/><feMergeNode in="edge"/></feMerge>
+    </filter></defs>
+    <path d="M 410.079 103.744 C 408.747 105.810, 403.877 112.610, 399.257 118.855 L 390.857 130.210 371.428 129.855 C 360.743 129.660, 352 129.806, 352 130.181 C 352 130.555, 356.542 137.080, 362.094 144.681 C 373.977 160.950, 374.528 162.078, 372.497 166.007 C 371.673 167.598, 371 169.368, 371 169.940 C 371 170.512, 368.719 177.103, 365.931 184.588 C 363.143 192.072, 361.060 198.393, 361.301 198.635 C 361.543 198.876, 364.049 198.163, 366.872 197.051 C 369.694 195.938, 377.917 193.212, 385.145 190.993 C 400.496 186.279, 396.857 185.152, 416.184 200.611 L 429.500 211.263 430 191.163 L 430.500 171.063 442.500 162.956 C 449.100 158.497, 456.196 153.895, 458.268 152.730 C 460.341 151.564, 461.879 150.137, 461.686 149.558 C 461.493 148.978, 453.272 145.854, 443.417 142.615 C 433.563 139.375, 425.375 136.624, 425.222 136.501 C 424.870 136.218, 418.133 112.153, 416.544 105.500 C 415.069 99.328, 413.244 98.832, 410.079 103.744 M 379 203.470 C 336.109 217.148, 308.434 226.456, 307.761 227.430 C 307.354 228.019, 307.309 229.175, 307.660 230 C 308.012 230.825, 309.413 235.325, 310.774 240 C 312.135 244.675, 313.578 248.862, 313.979 249.304 C 314.380 249.747, 318.487 249.331, 323.104 248.381 C 337.171 245.486, 343.852 249.176, 344.779 260.351 C 346.351 279.307, 326.852 354.091, 316.060 370.493 C 310.245 379.331, 309.929 378.650, 297.478 330.500 C 292.358 310.700, 285.669 284.825, 282.615 273 C 277.056 251.476, 274.012 235.820, 274.004 228.710 C 274.002 226.626, 273.052 223.026, 271.892 220.710 C 268.518 213.969, 257.697 200.032, 255.351 199.407 C 254.070 199.065, 248.615 200.516, 241.851 202.996 C 202.495 217.427, 176.340 227.404, 175.313 228.376 C 174.401 229.240, 174.691 231.438, 176.563 237.863 C 177.903 242.463, 179 247.090, 179 248.145 C 179 250.774, 181.236 251.407, 185.524 249.992 C 201.666 244.665, 209.420 259.782, 233.490 343.500 C 255.216 419.063, 260.382 431.606, 273.412 440.423 C 281.164 445.667, 287.280 447.030, 306.095 447.702 C 327.234 448.457, 327.320 448.434, 329.929 441.459 C 332.527 434.518, 347.114 392.667, 354.919 369.768 C 361.430 350.663, 363.917 343.588, 374.166 315 C 390.991 268.072, 400.852 247.265, 411.625 235.958 C 415.747 231.632, 415.936 228.531, 412.614 219.706 C 407.639 206.490, 401.693 197.908, 397.646 198.104 C 396.466 198.161, 388.075 200.576, 379 203.470" fill="url(#introVEmission)" filter="url(#introVLight)"/>
+  </svg></div>
+  <div class="hud">
+    <div class="hud-top mono">
+      <span style="font-size:9px; opacity:.8">CANBERRA · EST. LOCAL</span>
+    </div>
+    <div class="title-block" id="titleBlock" style="opacity:0">
+      <h1 class="stagger" id="wordmark" aria-label="V"><span class="l vwrap vslot" id="vslot"><svg class="vmark" id="vbase" viewBox="170.4 94.8 295.5 357.7" aria-label="V" role="img"><path d="M 410.079 103.744 C 408.747 105.810, 403.877 112.610, 399.257 118.855 L 390.857 130.210 371.428 129.855 C 360.743 129.660, 352 129.806, 352 130.181 C 352 130.555, 356.542 137.080, 362.094 144.681 C 373.977 160.950, 374.528 162.078, 372.497 166.007 C 371.673 167.598, 371 169.368, 371 169.940 C 371 170.512, 368.719 177.103, 365.931 184.588 C 363.143 192.072, 361.060 198.393, 361.301 198.635 C 361.543 198.876, 364.049 198.163, 366.872 197.051 C 369.694 195.938, 377.917 193.212, 385.145 190.993 C 400.496 186.279, 396.857 185.152, 416.184 200.611 L 429.500 211.263 430 191.163 L 430.500 171.063 442.500 162.956 C 449.100 158.497, 456.196 153.895, 458.268 152.730 C 460.341 151.564, 461.879 150.137, 461.686 149.558 C 461.493 148.978, 453.272 145.854, 443.417 142.615 C 433.563 139.375, 425.375 136.624, 425.222 136.501 C 424.870 136.218, 418.133 112.153, 416.544 105.500 C 415.069 99.328, 413.244 98.832, 410.079 103.744 M 379 203.470 C 336.109 217.148, 308.434 226.456, 307.761 227.430 C 307.354 228.019, 307.309 229.175, 307.660 230 C 308.012 230.825, 309.413 235.325, 310.774 240 C 312.135 244.675, 313.578 248.862, 313.979 249.304 C 314.380 249.747, 318.487 249.331, 323.104 248.381 C 337.171 245.486, 343.852 249.176, 344.779 260.351 C 346.351 279.307, 326.852 354.091, 316.060 370.493 C 310.245 379.331, 309.929 378.650, 297.478 330.500 C 292.358 310.700, 285.669 284.825, 282.615 273 C 277.056 251.476, 274.012 235.820, 274.004 228.710 C 274.002 226.626, 273.052 223.026, 271.892 220.710 C 268.518 213.969, 257.697 200.032, 255.351 199.407 C 254.070 199.065, 248.615 200.516, 241.851 202.996 C 202.495 217.427, 176.340 227.404, 175.313 228.376 C 174.401 229.240, 174.691 231.438, 176.563 237.863 C 177.903 242.463, 179 247.090, 179 248.145 C 179 250.774, 181.236 251.407, 185.524 249.992 C 201.666 244.665, 209.420 259.782, 233.490 343.500 C 255.216 419.063, 260.382 431.606, 273.412 440.423 C 281.164 445.667, 287.280 447.030, 306.095 447.702 C 327.234 448.457, 327.320 448.434, 329.929 441.459 C 332.527 434.518, 347.114 392.667, 354.919 369.768 C 361.430 350.663, 363.917 343.588, 374.166 315 C 390.991 268.072, 400.852 247.265, 411.625 235.958 C 415.747 231.632, 415.936 228.531, 412.614 219.706 C 407.639 206.490, 401.693 197.908, 397.646 198.104 C 396.466 198.161, 388.075 200.576, 379 203.470" fill="currentColor"/></svg><svg class="vmark pour" id="vpour" viewBox="170.4 94.8 295.5 357.7" aria-hidden="true"><path d="M 410.079 103.744 C 408.747 105.810, 403.877 112.610, 399.257 118.855 L 390.857 130.210 371.428 129.855 C 360.743 129.660, 352 129.806, 352 130.181 C 352 130.555, 356.542 137.080, 362.094 144.681 C 373.977 160.950, 374.528 162.078, 372.497 166.007 C 371.673 167.598, 371 169.368, 371 169.940 C 371 170.512, 368.719 177.103, 365.931 184.588 C 363.143 192.072, 361.060 198.393, 361.301 198.635 C 361.543 198.876, 364.049 198.163, 366.872 197.051 C 369.694 195.938, 377.917 193.212, 385.145 190.993 C 400.496 186.279, 396.857 185.152, 416.184 200.611 L 429.500 211.263 430 191.163 L 430.500 171.063 442.500 162.956 C 449.100 158.497, 456.196 153.895, 458.268 152.730 C 460.341 151.564, 461.879 150.137, 461.686 149.558 C 461.493 148.978, 453.272 145.854, 443.417 142.615 C 433.563 139.375, 425.375 136.624, 425.222 136.501 C 424.870 136.218, 418.133 112.153, 416.544 105.500 C 415.069 99.328, 413.244 98.832, 410.079 103.744 M 379 203.470 C 336.109 217.148, 308.434 226.456, 307.761 227.430 C 307.354 228.019, 307.309 229.175, 307.660 230 C 308.012 230.825, 309.413 235.325, 310.774 240 C 312.135 244.675, 313.578 248.862, 313.979 249.304 C 314.380 249.747, 318.487 249.331, 323.104 248.381 C 337.171 245.486, 343.852 249.176, 344.779 260.351 C 346.351 279.307, 326.852 354.091, 316.060 370.493 C 310.245 379.331, 309.929 378.650, 297.478 330.500 C 292.358 310.700, 285.669 284.825, 282.615 273 C 277.056 251.476, 274.012 235.820, 274.004 228.710 C 274.002 226.626, 273.052 223.026, 271.892 220.710 C 268.518 213.969, 257.697 200.032, 255.351 199.407 C 254.070 199.065, 248.615 200.516, 241.851 202.996 C 202.495 217.427, 176.340 227.404, 175.313 228.376 C 174.401 229.240, 174.691 231.438, 176.563 237.863 C 177.903 242.463, 179 247.090, 179 248.145 C 179 250.774, 181.236 251.407, 185.524 249.992 C 201.666 244.665, 209.420 259.782, 233.490 343.500 C 255.216 419.063, 260.382 431.606, 273.412 440.423 C 281.164 445.667, 287.280 447.030, 306.095 447.702 C 327.234 448.457, 327.320 448.434, 329.929 441.459 C 332.527 434.518, 347.114 392.667, 354.919 369.768 C 361.430 350.663, 363.917 343.588, 374.166 315 C 390.991 268.072, 400.852 247.265, 411.625 235.958 C 415.747 231.632, 415.936 228.531, 412.614 219.706 C 407.639 206.490, 401.693 197.908, 397.646 198.104 C 396.466 198.161, 388.075 200.576, 379 203.470" fill="currentColor"/></svg></span></h1>
+    </div>
+  </div>
+  <div class="stage-dim" id="stageDim" aria-hidden="true"></div>
+</div>
+  <script src="opener/production-opener.js"></script>
+</body>
+</html>

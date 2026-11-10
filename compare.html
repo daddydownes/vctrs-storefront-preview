@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VCTRS — Phone and laptop previews</title>
+<link rel="icon" href="assets/v-star.svg" type="image/svg+xml">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#292620;color:#f5f0e8;font:14px Arial,sans-serif;min-height:100dvh}
+header{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;padding:12px 8px;background:#171511;border-bottom:1px solid #514838}
+header span{font-weight:bold;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+button,a{color:inherit;font:inherit}
+button{cursor:pointer;background:transparent;border:1px solid #746851;padding:7px 12px}
+button[aria-pressed=true]{background:#e9cb92;color:#18140d}
+button:focus-visible,a:focus-visible{outline:2px solid #e9cb92;outline-offset:3px}
+a{margin-left:4px}
+main{width:min(1320px,calc(100% - 16px));margin:12px auto 18px}
+.frame-shell{position:relative;margin:auto;background:#100f0d;box-shadow:0 0 0 1px #746851,0 10px 35px #0007;overflow:hidden;border-radius:8px}
+iframe{position:absolute;top:0;left:0;display:block;transform-origin:top left;border:0}
+</style>
+</head>
+<body>
+<header aria-label="Device preview">
+  <span>View as</span>
+  <button type="button" data-device="phone" aria-pressed="true">Phone</button>
+  <button type="button" data-device="laptop" aria-pressed="false">Laptop</button>
+  <a href="index.html">Full preview</a>
+</header>
+<main>
+  <div class="frame-shell"><iframe title="Interactive VCTRS storefront demo"></iframe></div>
+</main>
+<script>
+const header = document.querySelector('header');
+const main = document.querySelector('main');
+const shell = document.querySelector('.frame-shell');
+const frame = document.querySelector('iframe');
+const buttons = [...document.querySelectorAll('[data-device]')];
+const params = new URLSearchParams(location.search);
+let device = params.get('device') === 'laptop' ? 'laptop' : 'phone';
+frame.src = 'index.html?device=1&v=21';
+
+function fitPreview() {
+  const [width, height] = device === 'phone' ? [390, 844] : [1280, 800];
+  const availableHeight = Math.max(360, innerHeight - header.offsetHeight - 28);
+  const scale = Math.min(1, main.clientWidth / width, availableHeight / height);
+  shell.style.width = width * scale + 'px';
+  shell.style.height = height * scale + 'px';
+  frame.style.width = width + 'px';
+  frame.style.height = height + 'px';
+  frame.style.transform = 'scale(' + scale + ')';
+  for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.device === device));
+}
+for (const button of buttons) button.addEventListener('click', () => {
+  device = button.dataset.device;
+  params.set('device', device);
+  if (location.protocol !== 'file:') history.replaceState(null, '', '?' + params);
+  fitPreview();
+});
+window.addEventListener('resize', fitPreview);
+fitPreview();
+</script>
+</body>
+</html>

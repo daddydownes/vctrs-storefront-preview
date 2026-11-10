@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VCTRS — Storefront Preview</title>
+<link rel="icon" href="assets/v-star.svg" type="image/svg+xml">
+<link rel="stylesheet" href="shop-panels.css?v=4">
+<link rel="stylesheet" href="vault-transition.css?v=1">
+<script src="vault-transition.js?v=1"></script>
+<style>
+:root{color-scheme:dark;--ink:#100f0d;--paper:#f5f0e8;--gold:#e9cb92;--muted:#bdb6a9;--rule:#3b362d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font:16px/1.4 Arial,sans-serif}
+a,button,select{color:inherit}
+button,select{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+[hidden]{display:none!important}
+#store{--storebar-height:63px}
+.store-top{position:sticky;top:0;z-index:3}
+.tools{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:8px;background:#201f1c;border-bottom:1px solid var(--rule)}
+.tools button{border:1px solid transparent;background:transparent;padding:5px 10px;font-size:12px;border-radius:3px;white-space:nowrap}
+.tools .replay{border-color:var(--rule);color:var(--muted)}
+.kicker{color:var(--gold);font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
+.tools .kicker{color:var(--muted);font-size:10px;margin:0 5px}
+.wrap{width:min(1120px,calc(100% - 48px));margin-inline:auto}
+.storebar{min-height:var(--storebar-height);display:flex;align-items:center}
+.logo{display:block;flex:none;width:94px;height:35px;background:var(--paper);mask:url('assets/wordmark.svg') center/contain no-repeat}
+.campaign{height:clamp(310px,56svh,620px);position:relative;isolation:isolate;overflow:hidden;background:var(--ink)}
+.campaign video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mask-image:linear-gradient(to bottom,transparent 3%,#000c 18%,#000d 40%,#0009 70%,transparent 96%)}
+.campaign-copy{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding-bottom:24px}
+.campaign-play{position:absolute;z-index:2;top:14px;right:max(14px,calc((100% - 1120px)/2));min-height:44px;padding:7px 13px;border:1px solid #e9cb9299;background:#17130deb;color:var(--gold);font-size:13px;font-weight:700}
+.campaign-play:hover{background:var(--gold);color:#21180e}
+h1,h2,h3,p{margin:0}
+h1{font:900 clamp(56px,11vw,142px)/.84 Arial,sans-serif;letter-spacing:-.085em;text-transform:uppercase;margin:7px 0 16px;text-shadow:0 2px 20px #0005}
+.scroll-link{display:inline-flex;align-items:center;gap:14px;min-height:50px;font-size:11px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.16em;padding:0 3px 0 0}
+.drop-cue{display:grid;place-items:center;width:45px;height:45px;color:var(--gold)}
+.drop-cue svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:square;stroke-linejoin:miter;transform:scaleX(1.35)}
+.scroll-link:is(:hover,:focus-visible) .drop-cue{color:#ffe2ac}
+@media(prefers-reduced-motion:no-preference){
+ body:not(.opening) .drop-cue svg{animation:drop-nudge 820ms ease-out 2}
+ @keyframes drop-nudge{0%,100%{transform:translateY(0) scaleX(1.35)}45%{transform:translateY(6px) scaleX(1.5)}}
+}
+.products{padding:20px 0 38px;scroll-margin-top:66px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,2vw,22px)}
+.card{min-width:0;background:#171511;border-bottom:1px solid var(--rule)}
+.card:last-child{border-bottom:0}
+.card[data-product=hat]{grid-column:1/-1}
+.photo{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center 35%;background:#28231d}
+.card[data-product=hat] .photo{aspect-ratio:2.35/1;object-position:center 29%}
+.detail{display:block;padding:13px 12px 16px}
+.card[data-product=hat] .detail{padding:16px}
+.detail .product-name{display:block;font-weight:700;font-size:clamp(15px,3vw,34px);line-height:1.12;letter-spacing:-.025em}
+.price{display:block;margin-top:5px;color:var(--gold);font-size:14px}
+.footer{padding:0 0 42px;scroll-margin-top:100px}
+.vault-link{display:flex;position:relative;isolation:isolate;align-items:center;overflow:hidden;min-height:250px;padding:clamp(24px,5vw,60px);background:#1d1a15;text-decoration:none}
+.vault-link::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#17140f 9%,#17140ff5 33%,#17140f30 75%,#17140f26)}
+.vault-photos{position:absolute;z-index:-2;inset:-12% -2% -12% 43%;display:grid;grid-template-columns:1fr 1fr;gap:8px;transform:rotate(-6deg) scale(1.08);filter:saturate(.55)}
+.vault-photos img{width:100%;height:100%;min-height:0;object-fit:cover;display:block}
+.vault-copy{display:grid;justify-items:start;gap:12px}
+.vault-copy h2{font-size:clamp(32px,5.5vw,66px);line-height:.92;letter-spacing:-.055em}
+.vault-action{display:inline-flex;align-items:center;margin-top:6px;padding:10px 14px;background:var(--gold);color:#21180e;font-size:13px;font-weight:700}
+.vault-link:is(:hover,:focus-visible) .vault-action{background:#ffe2ac}
+.opener{position:fixed;inset:0;z-index:5;background:#000;transition:opacity .22s ease;display:grid;place-items:center}
+.opener.fade{opacity:0;pointer-events:none}
+.opener iframe{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none}
+.opener button{position:absolute;right:18px;bottom:18px;padding:8px 12px;font-size:12px;background:#17130dbd;border:1px solid #fff8}
+body.opening{overflow:hidden}
+@media(max-width:650px){
+ .wrap{width:calc(100% - 28px)}
+ #store{--storebar-height:52px}
+ .logo{width:74px;height:28px}
+ .campaign{height:clamp(280px,51svh,500px)}
+ .campaign-copy{padding-bottom:15px}
+ .vault-link{min-height:204px}
+ .vault-photos{left:27%;right:-15%}
+ .vault-link::after{background:linear-gradient(90deg,#17140f 3%,#17140fe8 31%,#17140f45 94%)}
+ .card[data-product=hat] .photo{aspect-ratio:4/3}
+ .detail{display:block;padding:10px 8px 13px}
+}
+@media(max-width:335px){.tools .kicker{display:none}}
+@media(prefers-reduced-motion:reduce){.opener{transition:none}}
+
+.tools a{font-size:12px;text-decoration:none;padding:5px 8px;color:var(--gold)}
+.product-open{display:block;width:100%;padding:0;border:0;background:transparent;text-align:left}
+.product-open:hover .photo{filter:brightness(1.08)}
+.product-open:focus-visible{outline-offset:-3px}
+.view{display:grid;grid-template-columns:minmax(0,1fr) 34px;align-items:stretch;width:min(100%,174px);min-height:36px;margin-top:12px;background:#262017;border:1px solid #65553a;color:var(--gold);font-size:12px;font-weight:700}
+.view-label{align-self:center;padding:6px 5px 6px 10px}
+.view-icon{display:grid;place-items:center;border-left:1px solid #65553a;background:#32291c}
+.action-arrow{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.product-open:is(:hover,:focus-visible) .view{border-color:var(--gold)}
+.product-open:is(:hover,:focus-visible) .view-icon{background:var(--gold);border-color:var(--gold);color:#21180e}
+@media(max-width:650px){
+ .tools{gap:3px}
+ .tools button,.tools a{padding-inline:6px}
+ .tools .kicker{display:none}
+}
+</style>
+</head>
+<body>
+<svg aria-hidden="true" width="0" height="0" style="position:absolute">
+  <symbol id="arrow-right" viewBox="0 0 16 16"><path d="M2.5 8h10.75M9 3.75 13.25 8 9 12.25"/></symbol>
+</svg>
+<div id="store">
+  <div class="store-top">
+    <aside class="tools" aria-label="Storefront preview controls">
+      <span class="kicker">Preview</span>
+      <button type="button" class="replay">Replay opener</button>
+      <a id="device-preview" href="compare.html">Phone / Laptop</a>
+    </aside>
+    <div class="cart-rail wrap">
+      <button class="floating-cart" id="floating-cart" type="button" aria-haspopup="dialog" aria-controls="cart-dialog">
+        <span class="floating-cart-label">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l1.25 12H3.75L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
+          <span>Cart</span><span class="floating-cart-count" id="floating-cart-count">0</span>
+        </span>
+        <span class="floating-cart-subtotal" id="floating-cart-subtotal" hidden></span>
+      </button>
+    </div>
+  </div>
+  <header class="storebar wrap">
+    <div class="logo" role="img" aria-label="VCTRS"></div>
+  </header>
+  <main>
+    <section class="campaign" aria-labelledby="drop-title">
+      <video id="campaign" src="assets/campaign.mp4" poster="assets/campaign.jpg" muted playsinline loop preload="metadata" aria-hidden="true"></video>
+      <button class="campaign-play" type="button" hidden>Play video</button>
+      <div class="campaign-copy wrap">
+        <span class="kicker">VCTRS · Latest release</span>
+        <h1 id="drop-title">New Drop</h1>
+        <a class="scroll-link" href="#products">Shop the drop <span class="drop-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></a>
+      </div>
+    </section>
+    <section id="products" class="products wrap" aria-label="New drop products">
+      <div class="cards">
+        <article class="card" data-product="mesh">
+          <button class="product-open" type="button" aria-label="View V Star Mesh Tee">
+            <img class="photo" src="assets/mesh.jpg" alt="V Star Mesh Tee with a large V and star on the front" width="1067" height="1600">
+            <span class="detail"><span class="product-name">V Star Mesh Tee</span><span class="price">$60</span><span class="view"><span class="view-label">View product</span><span class="view-icon" aria-hidden="true"><svg class="action-arrow"><use href="#arrow-right"/></svg></span></span></span>
+          </button>
+        </article>
+        <article class="card" data-product="badge">
+          <button class="product-open" type="button" aria-label="View Black Badge Tee">
+            <img class="photo" src="assets/badge.jpg" alt="Black Badge Tee with a white VCTRS badge on the chest" width="1067" height="1600">
+            <span class="detail"><span class="product-name">Black Badge Tee</span><span class="price">$50</span><span class="view"><span class="view-label">View product</span><span class="view-icon" aria-hidden="true"><svg class="action-arrow"><use href="#arrow-right"/></svg></span></span></span>
+          </button>
+        </article>
+        <article class="card" data-product="hat">
+          <button class="product-open" type="button" aria-label="View VCTRS Trucker Hat">
+            <img class="photo" src="assets/hat.jpg" alt="Black VCTRS Trucker Hat with white embroidery" width="1067" height="1600">
+            <span class="detail"><span class="product-name">VCTRS Trucker Hat</span><span class="price">$50</span><span class="view"><span class="view-label">View product</span><span class="view-icon" aria-hidden="true"><svg class="action-arrow"><use href="#arrow-right"/></svg></span></span></span>
+          </button>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer class="footer wrap" id="previous-drops">
+    <a class="vault-link" href="vault-preview/index.html?v=2#vault" aria-labelledby="vault-heading vault-action">
+      <div class="vault-photos" aria-hidden="true">
+        <img src="assets/vault-hoodie.webp" loading="lazy" alt="">
+        <img src="assets/vault-tee.webp" loading="lazy" alt="">
+      </div>
+      <div class="vault-copy">
+        <p class="kicker">The Vault</p>
+        <h2 id="vault-heading">Previous Drops</h2>
+        <span class="vault-action" id="vault-action">Enter the Vault</span>
+      </div>
+    </a>
+  </footer>
+</div>
+<dialog id="product-dialog" aria-labelledby="product-name">
+  <div class="dialog-bar">
+    <span class="kicker">VCTRS · New Drop</span>
+    <form method="dialog"><button class="close" type="submit" aria-label="Close product" autofocus>×</button></form>
+  </div>
+  <form class="buy" id="buy">
+    <div class="dialog-body">
+      <div class="gallery">
+        <div class="gallery-stage">
+          <img class="gallery-photo" id="gallery-photo" alt="">
+          <button class="gallery-nav" id="gallery-prev" type="button" aria-label="Previous photo"><svg class="action-arrow" aria-hidden="true"><use href="#arrow-right"/></svg></button>
+          <button class="gallery-nav" id="gallery-next" type="button" aria-label="Next photo"><svg class="action-arrow" aria-hidden="true"><use href="#arrow-right"/></svg></button>
+        </div>
+        <div class="gallery-meta"><div class="thumbs" id="thumbs" aria-label="Product photos"></div><span class="gallery-count" id="gallery-count" aria-live="polite"></span></div>
+      </div>
+      <div class="buy-details">
+        <div><h2 id="product-name"></h2><p id="product-price" class="price"></p></div>
+        <fieldset id="size-field" class="size-field">
+          <legend>Size</legend>
+          <div class="size-options" id="size-options"></div>
+        </fieldset>
+        <p id="product-fit" class="product-fit" hidden></p>
+        <div class="buy-quantity">
+          <span id="quantity-label">Quantity</span>
+          <div class="quantity-stepper" role="group" aria-labelledby="quantity-label">
+            <button class="step-btn" id="qty-minus" type="button" aria-label="Decrease quantity" disabled>−</button>
+            <output id="qty-value" aria-label="Quantity">1</output>
+            <button class="step-btn" id="qty-plus" type="button" aria-label="Increase quantity" disabled>+</button>
+          </div>
+        </div>
+        <p class="stock-note" id="stock-note" role="status"></p>
+      </div>
+    </div>
+    <div class="dialog-actions">
+      <button class="add" type="submit" disabled><span id="add-label">Select a size</span><span id="add-total"></span></button>
+    </div>
+  </form>
+</dialog>
+<dialog id="cart-dialog" class="cart" aria-labelledby="cart-title">
+  <div class="dialog-bar">
+    <h2 id="cart-title">Your cart</h2>
+    <form method="dialog"><button class="close" type="submit" aria-label="Close cart" autofocus>×</button></form>
+  </div>
+  <div class="bag-body">
+    <p class="cart-feedback" id="cart-feedback" role="status" hidden></p>
+    <ul class="bag-list" id="bag-list"></ul>
+    <p class="bag-empty" id="bag-empty">Your cart is empty.</p>
+    <dl class="bag-totals" id="bag-totals" hidden>
+      <div><dt>Subtotal</dt><dd id="subtotal"></dd></div>
+      <div><dt>Flat shipping</dt><dd>$10</dd></div>
+      <div class="order-total"><dt><strong>Total</strong></dt><dd><strong id="total"></strong></dd></div>
+    </dl>
+  </div>
+  <div class="cart-actions">
+    <button class="checkout-button" id="checkout-start" type="button" hidden><span>Checkout</span><span id="checkout-cta-total"></span></button>
+    <form method="dialog"><button class="keep-shopping" type="submit">Keep shopping</button></form>
+    <p class="note">Demo cart · No payments</p>
+  </div>
+</dialog>
+<dialog id="checkout-dialog" aria-labelledby="checkout-title">
+  <div class="dialog-bar">
+    <h2 id="checkout-title">Checkout</h2>
+    <form method="dialog"><button class="close" type="submit" aria-label="Close checkout" autofocus>×</button></form>
+  </div>
+  <div class="checkout-stage" id="checkout-review">
+    <div class="checkout-body">
+      <span class="kicker">Demo checkout</span>
+      <h3 class="checkout-heading">Review your order</h3>
+      <ul class="checkout-items" id="checkout-items"></ul>
+      <dl class="bag-totals">
+        <div><dt>Subtotal</dt><dd id="checkout-subtotal"></dd></div>
+        <div><dt>Flat shipping</dt><dd>$10</dd></div>
+        <div class="order-total"><dt><strong>Total</strong></dt><dd><strong id="checkout-total"></strong></dd></div>
+      </dl>
+    </div>
+    <div class="cart-actions">
+      <button class="checkout-button" id="place-demo-order" type="button">Place demo order</button>
+      <button class="checkout-back" id="checkout-back" type="button">Back to cart</button>
+    </div>
+  </div>
+  <div class="checkout-stage" id="checkout-confirmation" hidden>
+    <div class="checkout-body checkout-success">
+      <span class="order-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></svg></span>
+      <h3 class="checkout-heading">Demo order complete</h3>
+      <p class="checkout-note">Order total <strong id="checkout-placed-total"></strong>. No payment was taken.</p>
+    </div>
+    <div class="cart-actions">
+      <form method="dialog"><button class="keep-shopping" id="checkout-done" type="submit">Continue shopping</button></form>
+    </div>
+  </div>
+</dialog>
+<div class="opener" hidden>
+  <button type="button">Skip opener</button>
+</div>
+<script>
+const opener = document.querySelector('.opener');
+const messageOrigin = location.protocol === 'file:' ? '*' : location.origin;
+const openerOrigin = location.protocol === 'file:' ? 'null' : location.origin;
+const campaign = document.querySelector('#campaign');
+const campaignPlay = document.querySelector('.campaign-play');
+const tools = document.querySelector('.tools');
+const store = document.querySelector('#store');
+const replay = document.querySelector('.replay');
+const skip = opener.querySelector('button');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const inDevicePreview = new URLSearchParams(location.search).has('device');
+let endingTimer;
+let stallTimer;
+let restoreFocus;
+let openerFrame;
+let campaignAttempt = 0;
+let campaignStartTimer;
+
+const deviceLink = document.querySelector('#device-preview');
+const archiveLink = document.querySelector('.vault-link');
+if (inDevicePreview) archiveLink.href = 'vault-preview/index.html?device=1&v=2#vault';
+archiveLink.addEventListener('click', event => {
+  if (!window.vctrsVaultTransition || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  window.vctrsVaultTransition.leave('enter', archiveLink.href);
+});
+window.vctrsVaultTransition?.arrive('exit');
+function hideCampaignPlay(){
+  clearTimeout(campaignStartTimer);
+  if (document.activeElement === campaignPlay) {
+    document.querySelector('.scroll-link').focus({preventScroll:true});
+  }
+  campaignPlay.hidden = true;
+}
+function playCampaign(){
+  const attempt = ++campaignAttempt;
+  clearTimeout(campaignStartTimer);
+  function offerPlay(){
+    if (attempt !== campaignAttempt) return;
+    clearTimeout(campaignStartTimer);
+    campaignPlay.hidden = false;
+  }
+  // Safari can require a tap, even for muted inline video in Low Power Mode.
+  campaignStartTimer = setTimeout(offerPlay, 4000);
+  campaign.play().then(() => {
+    if (attempt === campaignAttempt) hideCampaignPlay();
+  }).catch(offerPlay);
+}
+campaignPlay.addEventListener('click', playCampaign);
+function revealStore(){
+  if (opener.hidden || opener.classList.contains('fade')) return;
+  clearTimeout(stallTimer);
+  opener.classList.add('fade');
+  document.body.classList.remove('opening');
+  tools.inert = store.inert = false;
+  endingTimer = setTimeout(() => {
+    opener.hidden = true;
+    openerFrame?.remove();
+    openerFrame = undefined;
+  }, 230);
+  if (restoreFocus || document.activeElement === skip) replay.focus({preventScroll:true});
+  playCampaign();
+}
+function playOpening(fromButton){
+  clearTimeout(endingTimer);
+  clearTimeout(stallTimer);
+  restoreFocus = fromButton;
+  window.scrollTo(0,0);
+  campaignAttempt++;
+  hideCampaignPlay();
+  campaign.pause();
+  opener.hidden = false;
+  opener.classList.remove('fade');
+  document.body.classList.add('opening');
+  tools.inert = store.inert = true;
+  if (fromButton) skip.focus({preventScroll:true});
+  openerFrame?.remove();
+  openerFrame = document.createElement('iframe');
+  openerFrame.title = 'VCTRS opening film';
+  openerFrame.tabIndex = -1;
+  openerFrame.setAttribute('aria-hidden', 'true');
+  openerFrame.allow = 'autoplay';
+  openerFrame.src = 'production-opener.html?embedded=1';
+  opener.prepend(openerFrame);
+  stallTimer = setTimeout(revealStore, 18000);
+}
+window.addEventListener('message', event => {
+  if (!openerFrame || event.source !== openerFrame.contentWindow || event.origin !== openerOrigin || opener.classList.contains('fade')) return;
+  if (event.data?.type === 'vctrs-opener-ready') {
+    openerFrame.contentWindow.postMessage({type:'vctrs-opener-start'}, messageOrigin);
+  } else if (event.data?.type === 'vctrs-opener-complete') {
+    revealStore();
+  }
+});
+skip.addEventListener('click',revealStore);
+replay.addEventListener('click',() => playOpening(true));
+if (inDevicePreview) deviceLink.hidden = true;
+if (!reducedMotion.matches && !inDevicePreview && location.hash !== '#previous-drops') playOpening(false);
+else playCampaign();
+</script>
+<script src="shop.js?v=5"></script>
+</body>
+</html>
