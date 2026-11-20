@@ -96,7 +96,7 @@ body.opening{overflow:hidden}
 }
 </style>
 <link rel="stylesheet" href="gold-stamp.css">
-<link rel="stylesheet" href="release-preview.css?v=33">
+<link rel="stylesheet" href="release-preview.css?v=34">
 </head>
 <body>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute">
@@ -122,9 +122,7 @@ body.opening{overflow:hidden}
       <video id="campaign" data-src="assets/optimized/nov7-reel-trimmed-wide.mp4" data-compact-src="assets/optimized/nov7-reel-trimmed-compact.mp4" poster="assets/optimized/nov7-reel-poster.jpg" muted playsinline loop preload="none" aria-hidden="true"></video>
       <button class="campaign-play" type="button" hidden>Play video</button>
       <div class="campaign-copy wrap">
-        <span class="kicker">VCTRS · Latest release</span>
-        <h1 id="drop-title">New Drop</h1>
-        <a class="scroll-link" href="#products">Shop the drop <span class="drop-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></a>
+        <h1 id="drop-title"><a class="scroll-link" href="#products">Shop the drop <span class="drop-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></a></h1>
       </div>
     </section>
     <section id="products" class="products wrap" aria-label="New drop products">
@@ -310,12 +308,6 @@ body.opening{overflow:hidden}
 <div class="opener" hidden>
 </div>
 <script>
-if (new URLSearchParams(location.search).get('hero') === 'release') {
-  document.documentElement.classList.add('release-preview');
-  const accent = document.createElement('em');
-  accent.textContent = 'Drop';
-  document.getElementById('drop-title').replaceChildren('New ', accent);
-}
 const opener = document.querySelector('.opener');
 const messageOrigin = location.protocol === 'file:' ? '*' : location.origin;
 const openerOrigin = location.protocol === 'file:' ? 'null' : location.origin;

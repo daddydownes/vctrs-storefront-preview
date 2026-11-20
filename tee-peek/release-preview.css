@@ -30,59 +30,32 @@ html.gold-stamp #products .stamp-card .product-open:focus-visible .view {
   .stamp-card .view-icon { transition: transform .18s ease-out; }
   .stamp-card .product-open:hover .view-icon { transform: translateX(2px); }
 }
-.release-preview .campaign-copy {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: 1fr auto auto;
-  align-items: end;
-  column-gap: 12px;
-  padding-bottom: clamp(20px, 4vh, 40px);
+/* One linked headline over the campaign film. */
+.campaign::after {
+  content: "";
+  position: absolute;
+  inset: 25% 0 0;
+  background: linear-gradient(transparent, #070604aa);
+  pointer-events: none;
 }
-.release-preview .campaign-copy .kicker {
-  grid-area: 2 / 1 / 3 / -1;
-  display: flex;
-  gap: 9px;
+.campaign-copy { width: min(1120px, calc(100% - 40px)); padding-bottom: 22px; }
+#drop-title { margin: 0; font: inherit; letter-spacing: normal; text-shadow: none; text-transform: none; }
+.campaign-copy .scroll-link {
+  display: inline-flex;
   align-items: center;
-  margin-bottom: 7px;
-  font-size: 10px;
-  letter-spacing: .17em;
-}
-.release-preview .kicker::before { content: ''; width: 26px; height: 1px; background: currentColor; }
-.release-preview #drop-title {
-  grid-area: 3 / 1;
-  margin: 0;
-  color: #fff7e9;
-  font: 700 clamp(50px, 12vw, 146px)/.88 "Barlow Condensed", Arial, sans-serif;
-  letter-spacing: -.045em;
+  gap: 13px;
+  padding: 3px 0;
+  min-height: 50px;
+  color: #fff9eb;
+  font: 700 clamp(36px, 10vw, 64px)/1.05 Arial, sans-serif;
+  letter-spacing: -.055em;
   text-transform: none;
 }
-.release-preview #drop-title em {
-  color: #ead6ad;
-  font: italic .87em/.9 Georgia, serif;
-  letter-spacing: -.075em;
-}
-.release-preview .scroll-link {
-  grid-area: 3 / 2;
-  align-self: end;
-  gap: 9px;
-  min-height: 44px;
-  padding: 0 0 0 8px;
-  font-size: 12px;
-  letter-spacing: 0;
-  text-transform: none;
-  white-space: nowrap;
-}
-.release-preview .drop-cue {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #dec593;
-  border-radius: 50%;
-  background: #120e0ad9;
-}
-.release-preview .drop-cue svg { width: 14px; height: 14px; transform: none; animation: none !important; }
-@media (max-width:480px) {
-  .release-preview .campaign-copy { grid-template-columns: 1fr; grid-template-rows: 1fr auto auto auto; }
-  .release-preview .scroll-link { grid-area: 4 / 1; justify-self: start; padding: 0; margin-top: 6px; }
+.campaign-copy .drop-cue { width: 26px; height: 26px; color: #ead6ad; }
+body .campaign-copy .drop-cue svg { width: 20px; height: 20px; transform: none; animation: none; stroke-width: 2; }
+@media (prefers-reduced-motion: no-preference) {
+  body:not(.opening) .campaign-copy .scroll-link { animation: shop-reveal .65s .14s cubic-bezier(.18,.72,.18,1) backwards; }
+  @keyframes shop-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 }
 
 /* The Vault is an archive entrance within the full clickable banner. */
