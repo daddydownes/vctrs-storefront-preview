@@ -1,11 +1,10 @@
 <!doctype html>
-<html lang="en-AU">
+<html lang="en-AU" class="gold-stamp">
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VCTRS — New Drop</title>
-<script src="frames.js"></script>
+<title>VCTRS — Store</title>
 <link rel="icon" href="assets/v-star.svg" type="image/svg+xml">
 <link rel="stylesheet" href="shop-panels.css?v=35">
 <link rel="stylesheet" href="vault-transition.css?v=1">
@@ -25,7 +24,21 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 .wrap{width:min(1120px,calc(100% - 48px));margin-inline:auto}
 .storebar{min-height:var(--storebar-height);display:flex;align-items:center}
 .logo{display:block;flex:none;width:94px;height:35px;background:var(--paper);mask:url('assets/wordmark.svg') center/contain no-repeat}
+.campaign{height:clamp(310px,56svh,620px);position:relative;isolation:isolate;overflow:hidden;background:var(--ink)}
+.campaign video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;mask-image:linear-gradient(to bottom,transparent 3%,#000c 18%,#000d 40%,#0009 70%,transparent 96%)}
+.campaign-copy{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;padding-bottom:24px}
+.campaign-play{position:absolute;z-index:2;top:14px;right:max(14px,calc((100% - 1120px)/2));min-height:44px;padding:7px 13px;border:1px solid #e9cb9299;background:#000;color:var(--gold);font-size:13px;font-weight:700}
+.campaign-play:hover{background:var(--gold);color:#21180e}
 h1,h2,h3,p{margin:0}
+h1{font:900 clamp(56px,11vw,142px)/.84 Arial,sans-serif;letter-spacing:-.085em;text-transform:uppercase;margin:7px 0 16px;text-shadow:0 2px 20px #0005}
+.scroll-link{display:inline-flex;align-items:center;gap:14px;min-height:50px;font-size:11px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.16em;padding:0 3px 0 0}
+.drop-cue{display:grid;place-items:center;width:45px;height:45px;color:var(--gold)}
+.drop-cue svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:square;stroke-linejoin:miter;transform:scaleX(1.35)}
+.scroll-link:is(:hover,:focus-visible) .drop-cue{color:#ffe2ac}
+@media(prefers-reduced-motion:no-preference){
+ body:not(.opening) .drop-cue svg{animation:drop-nudge 820ms ease-out 2}
+ @keyframes drop-nudge{0%,100%{transform:translateY(0) scaleX(1.35)}45%{transform:translateY(6px) scaleX(1.5)}}
+}
 .products{padding:20px 0 38px;scroll-margin-top:66px}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,2vw,22px)}
 .card{min-width:0;background:#000;border:0}
@@ -60,6 +73,8 @@ body.opening{overflow:hidden}
  .wrap{width:calc(100% - 28px)}
  #store{--storebar-height:52px}
  .logo{width:74px;height:28px}
+ .campaign{height:clamp(280px,51svh,500px)}
+ .campaign-copy{padding-bottom:15px}
  .vault-link{min-height:204px}
  .vault-photos{left:27%;right:-15%}
  .vault-link::after{background:linear-gradient(90deg,#000 3%,#000000e8 31%,#00000045 94%)}
@@ -80,18 +95,7 @@ body.opening{overflow:hidden}
 @media(max-width:650px){
 }
 </style>
-<link rel="stylesheet" href="freeze.css?v=original-card-peek">
-<link rel="stylesheet" href="title-motion.css?v=solid-gold-aperture">
-<script>
-  document.documentElement.classList.add('intro-pending');
-  if (smileParams.get('lettering') === 'gold') {
-    document.documentElement.classList.add('gold-stamp');
-    const stampStyles = document.createElement('link');
-    stampStyles.rel = 'stylesheet';
-    stampStyles.href = 'gold-stamp.css';
-    document.head.append(stampStyles);
-  }
-</script>
+<link rel="stylesheet" href="gold-stamp.css">
 </head>
 <body>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute">
@@ -110,20 +114,16 @@ body.opening{overflow:hidden}
     </div>
   </div>
   <header class="storebar wrap">
-    <a class="logo" data-frame-picker href="frames.html" aria-label="VCTRS — choose a different frame"></a>
+    <div class="logo" role="img" aria-label="VCTRS"></div>
   </header>
   <main>
     <section class="campaign" aria-labelledby="drop-title">
-      <picture class="campaign-picture">
-        <source id="tall-frame" media="(max-width:820px) and (orientation:portrait) and (max-aspect-ratio:2/3)">
-        <source id="phone-frame" media="(max-width:820px) and (orientation:portrait)">
-        <img class="campaign-photo" width="1920" height="1080" fetchpriority="high" alt="The VCTRS crew outside the roller door.">
-      </picture>
-      <div class="opener" hidden></div>
-      <script src="landing-frame.js"></script>
+      <video id="campaign" data-src="assets/optimized/campaign-full.mp4" data-compact-src="assets/optimized/campaign-960.mp4" poster="assets/optimized/campaign.webp" muted playsinline loop preload="none" aria-hidden="true"></video>
+      <button class="campaign-play" type="button" hidden>Play video</button>
       <div class="campaign-copy wrap">
-        <h1 id="drop-title" aria-label="New Drop"><span class="title-word"><span class="title-ink">New</span></span> <em class="title-word"><span class="title-ink">Drop</span></em></h1>
-        <a class="scroll-link" href="#products">Shop the drop <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v13m-6-6 6 6 6-6"/></svg></a>
+        <span class="kicker">VCTRS · Latest release</span>
+        <h1 id="drop-title">New Drop</h1>
+        <a class="scroll-link" href="#products">Shop the drop <span class="drop-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></a>
       </div>
     </section>
     <section id="products" class="products wrap" aria-label="New drop products">
@@ -162,7 +162,6 @@ body.opening{overflow:hidden}
         <span class="vault-action" id="vault-action">Enter the Vault</span>
       </div>
     </a>
-    <nav class="review-link" aria-label="Demo previews"><a data-intro-gallery href="intros.html" target="_top">Compare intros</a><a data-frame-picker href="frames.html" target="_top">Choose another frame</a></nav>
   </footer>
 </div>
 <dialog id="product-dialog" aria-labelledby="product-name">
@@ -307,8 +306,117 @@ body.opening{overflow:hidden}
     </div>
   </form>
 </dialog>
-<script src="intro-motion.js?v=solid-gold-aperture"></script>
-<script src="freeze.js?v=original-opening"></script>
+<div class="opener" hidden>
+</div>
+<script>
+const opener = document.querySelector('.opener');
+const messageOrigin = location.protocol === 'file:' ? '*' : location.origin;
+const openerOrigin = location.protocol === 'file:' ? 'null' : location.origin;
+const campaign = document.querySelector('#campaign');
+const campaignPlay = document.querySelector('.campaign-play');
+const store = document.querySelector('#store');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const inDevicePreview = new URLSearchParams(location.search).has('device');
+let endingTimer;
+let stallTimer;
+let openerFrame;
+let campaignAttempt = 0;
+let campaignStartTimer;
+
+const archiveLink = document.querySelector('.vault-link');
+if (inDevicePreview) archiveLink.href = 'vault-preview/index.html?device=1&v=2#vault';
+function hideCampaignPlay(){
+  clearTimeout(campaignStartTimer);
+  if (document.activeElement === campaignPlay) {
+    document.querySelector('.scroll-link').focus({preventScroll:true});
+  }
+  campaignPlay.hidden = true;
+}
+const connection = navigator.connection;
+function prefersStaticMedia() {
+  return reducedMotion.matches || Boolean(connection?.saveData);
+}
+const constrainedConnection = connection?.saveData || /(^|-)2g$|^3g$/.test(connection?.effectiveType || '');
+function playCampaign(){
+  if (document.hidden || document.body.classList.contains('vault-open')) return;
+  if (!campaign.getAttribute('src')) campaign.src = constrainedConnection ? campaign.dataset.compactSrc : campaign.dataset.src;
+  const attempt = ++campaignAttempt;
+  clearTimeout(campaignStartTimer);
+  function offerPlay(){
+    if (attempt !== campaignAttempt) return;
+    clearTimeout(campaignStartTimer);
+    campaignPlay.hidden = false;
+  }
+  // Safari can require a tap, even for muted inline video in Low Power Mode.
+  campaignStartTimer = setTimeout(offerPlay, 4000);
+  campaign.play().then(() => {
+    if (attempt === campaignAttempt) hideCampaignPlay();
+  }).catch(offerPlay);
+}
+campaignPlay.addEventListener('click', playCampaign);
+function revealStore(){
+  if (opener.hidden || opener.classList.contains('fade')) return;
+  clearTimeout(stallTimer);
+  store.hidden = false;
+  opener.classList.add('fade');
+  document.body.classList.remove('opening');
+  store.inert = false;
+  endingTimer = setTimeout(() => {
+    opener.hidden = true;
+    openerFrame?.remove();
+    openerFrame = undefined;
+  }, 230);
+  playCampaign();
+}
+function playOpening(){
+  clearTimeout(endingTimer);
+  clearTimeout(stallTimer);
+  window.scrollTo(0,0);
+  campaignAttempt++;
+  hideCampaignPlay();
+  campaign.pause();
+  opener.hidden = false;
+  opener.classList.remove('fade');
+  document.body.classList.add('opening');
+  store.inert = true;
+  store.hidden = true;
+  openerFrame?.remove();
+  openerFrame = document.createElement('iframe');
+  openerFrame.title = 'VCTRS opening film';
+  openerFrame.tabIndex = -1;
+  openerFrame.setAttribute('aria-hidden', 'true');
+  openerFrame.allow = 'autoplay';
+  openerFrame.src = 'original-opener.html?embedded=1';
+  opener.prepend(openerFrame);
+  stallTimer = setTimeout(revealStore, 18000);
+}
+window.addEventListener('message', event => {
+  if (!openerFrame || event.source !== openerFrame.contentWindow || event.origin !== openerOrigin || opener.classList.contains('fade')) return;
+  if (event.data?.type === 'vctrs-opener-ready') {
+    openerFrame.contentWindow.postMessage({type:'vctrs-opener-start'}, messageOrigin);
+  } else if (event.data?.type === 'vctrs-opener-complete') {
+    revealStore();
+  }
+});
+if (!reducedMotion.matches && !inDevicePreview && !location.hash) playOpening();
+else if (location.hash !== '#vault') playCampaign();
+window.addEventListener('vctrs-vault-visibility', event => {
+  if (event.detail.active) campaign.pause();
+  else if (campaignVisible) playCampaign();
+});
+let campaignVisible = true;
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(entries => {
+    campaignVisible = entries[0].isIntersecting;
+    if (!campaignVisible) campaign.pause();
+    else if (opener.hidden) playCampaign();
+  }, {threshold: 0}).observe(campaign);
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) campaign.pause();
+  else if (campaignVisible && opener.hidden) playCampaign();
+});
+</script>
 <script src="shop.js?v=25"></script>
 </body>
 </html>
