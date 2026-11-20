@@ -904,7 +904,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // The two tee cards share the product gallery's photos and responsive sources.
-const teePhotoInterval = 3000;
+const teePhotoInterval = 4300;
 function startTeeLoop(stage, cardIndex) {
   const card = stage.closest('.card');
   const product = products[card.dataset.product];
