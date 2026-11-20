@@ -76,14 +76,17 @@ html.gold-stamp #previous-drops .vault-link .vault-action {
   text-shadow: none;
 }
 html.gold-stamp #previous-drops .vault-action .action-arrow {
-  width: 30px;
-  height: 30px;
-  padding: 6px;
-  color: #e9cb92;
-  border: 1px solid #a58e64;
-  border-radius: 50%;
+  width: 32px;
+  height: 16px;
+  color: #aa9983;
+  fill: currentColor;
+  stroke: none;
 }
-html.gold-stamp #previous-drops .vault-link:is(:hover, :focus-visible) .action-arrow {
-  background: #e9cb92;
-  color: #21180e;
+@media (prefers-reduced-motion: no-preference) {
+  html.gold-stamp #previous-drops .vault-action .action-arrow {
+    transition: transform 180ms ease-out;
+  }
+  html.gold-stamp #previous-drops .vault-link:is(:hover, :focus-visible) .action-arrow {
+    transform: translateX(3px);
+  }
 }
