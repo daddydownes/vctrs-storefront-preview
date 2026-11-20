@@ -118,7 +118,7 @@ body.opening{overflow:hidden}
   </header>
   <main>
     <section class="campaign" aria-labelledby="drop-title">
-      <video id="campaign" data-src="assets/optimized/campaign-full.mp4" data-compact-src="assets/optimized/campaign-960.mp4" poster="assets/optimized/campaign.webp" muted playsinline loop preload="none" aria-hidden="true"></video>
+      <video id="campaign" data-src="assets/optimized/nov7-reel-wide.mp4" data-compact-src="assets/optimized/nov7-reel-compact.mp4" poster="assets/optimized/nov7-reel-poster.jpg" muted playsinline loop preload="none" aria-hidden="true"></video>
       <button class="campaign-play" type="button" hidden>Play video</button>
       <div class="campaign-copy wrap">
         <span class="kicker">VCTRS · Latest release</span>
@@ -339,7 +339,10 @@ function prefersStaticMedia() {
 const constrainedConnection = connection?.saveData || /(^|-)2g$|^3g$/.test(connection?.effectiveType || '');
 function playCampaign(){
   if (document.hidden || document.body.classList.contains('vault-open')) return;
-  if (!campaign.getAttribute('src')) campaign.src = constrainedConnection ? campaign.dataset.compactSrc : campaign.dataset.src;
+  if (!campaign.getAttribute('src')) {
+    const useCompactVideo = constrainedConnection || matchMedia('(max-width: 650px)').matches;
+    campaign.src = useCompactVideo ? campaign.dataset.compactSrc : campaign.dataset.src;
+  }
   const attempt = ++campaignAttempt;
   clearTimeout(campaignStartTimer);
   function offerPlay(){
