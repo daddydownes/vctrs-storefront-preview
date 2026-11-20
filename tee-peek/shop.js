@@ -904,6 +904,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // The two tee cards share the product gallery's photos and responsive sources.
+const teePhotoInterval = 3000;
 function startTeeLoop(stage, cardIndex) {
   const card = stage.closest('.card');
   const product = products[card.dataset.product];
@@ -923,7 +924,7 @@ function startTeeLoop(stage, cardIndex) {
       index = next;
       link.dataset.photoIndex = String(index);
     }
-    timer = setTimeout(advance, 5600);
+    timer = setTimeout(advance, teePhotoInterval);
   }
 
   function canPlay() {
@@ -944,7 +945,7 @@ function startTeeLoop(stage, cardIndex) {
       }
     }
     // Offset the two cards so only one starts a dissolve at a time.
-    timer = setTimeout(advance, 5600 + cardIndex * 2200);
+    timer = setTimeout(advance, teePhotoInterval + cardIndex * (teePhotoInterval / 2));
   }
 
   reducedMotion.addEventListener('change', sync);
