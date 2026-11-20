@@ -137,14 +137,15 @@ function remaining(product, variant) {
   return Math.max(0, (products[product].stock[variant] ?? 0) - (cart.get(cartKey(product, variant))?.quantity ?? 0));
 }
 
-function setPhoto(index) {
+function setPhoto(index, fadeElapsed = 0) {
+  cancelGalleryAdvance();
   const photos = products[activeProduct].photos;
   photoIndex = (index + photos.length) % photos.length;
   const [file, description] = photos[photoIndex];
   setProductImage(galleryPhoto, file, '(max-width: 650px) calc(100vw - 58px), 580px');
   galleryPhoto.alt = description;
-  galleryCount.textContent = `${photoIndex + 1} / ${photos.length}`;
-
+  if (galleryCount) galleryCount.textContent = `${photoIndex + 1} / ${photos.length}`;
+  scheduleGalleryAdvance(fadeElapsed);
 }
 
 function renderSelection() {
@@ -179,6 +180,7 @@ function openProduct(button) {
   renderSizeOptions();
   productDialog.showModal();
   productScroll.scrollTop = 0;
+  scheduleGalleryAdvance();
 }
 
 function renderSizeOptions() {
@@ -722,8 +724,8 @@ for (const button of document.querySelectorAll('.product-open')) {
     refreshCatalog();
   });
 }
-document.querySelector('#gallery-prev').addEventListener('click', () => setPhoto(photoIndex - 1));
-document.querySelector('#gallery-next').addEventListener('click', () => setPhoto(photoIndex + 1));
+document.querySelector('#gallery-prev')?.addEventListener('click', () => setPhoto(photoIndex - 1));
+document.querySelector('#gallery-next')?.addEventListener('click', () => setPhoto(photoIndex + 1));
 const galleryStage = document.querySelector('.gallery-stage');
 let galleryGesture;
 galleryStage.addEventListener('pointerdown', event => {
@@ -912,6 +914,48 @@ document.addEventListener('visibilitychange', () => {
 
 // The two tee cards share the product gallery's photos and responsive sources.
 const teePhotoInterval = 4300;
+const autoGallery = document.querySelector('[data-auto-gallery]');
+let galleryTimer;
+let incomingPhoto;
+function cancelGalleryAdvance() {
+  clearTimeout(galleryTimer);
+  incomingPhoto?.remove();
+  incomingPhoto = null;
+}
+
+function scheduleGalleryAdvance(fadeElapsed = 0) {
+  cancelGalleryAdvance();
+  if (!autoGallery || !productDialog.open || document.hidden || prefersStaticMedia() ||
+      products[activeProduct].photos.length < 2) return;
+  galleryTimer = setTimeout(async () => {
+    const photos = products[activeProduct].photos;
+    const next = (photoIndex + 1) % photos.length;
+    const image = new Image();
+    incomingPhoto = image;
+    image.className = 'gallery-photo';
+    image.alt = '';
+    image.draggable = false;
+    setProductImage(image, photos[next][0], galleryPhoto.sizes);
+    try {
+      await image.decode();
+      if (incomingPhoto !== image) return;
+      galleryStage.append(image);
+      await image.animate([{opacity: 0}, {opacity: 1}], {
+        duration: 1100, easing: 'ease-in-out', fill: 'forwards'
+      }).finished;
+      if (incomingPhoto === image) setPhoto(next, 1100);
+    } catch {
+      if (incomingPhoto === image) scheduleGalleryAdvance();
+    }
+  }, teePhotoInterval - fadeElapsed);
+}
+if (autoGallery) {
+  const sync = () => scheduleGalleryAdvance();
+  productDialog.addEventListener('close', sync);
+  document.addEventListener('visibilitychange', sync);
+  reducedMotion.addEventListener('change', sync);
+  connection?.addEventListener?.('change', sync);
+}
 function startTeeLoop(stage, cardIndex) {
   const card = stage.closest('.card');
   const product = products[card.dataset.product];

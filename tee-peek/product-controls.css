@@ -42,6 +42,9 @@
   outline: 2px solid #f4dba9;
   outline-offset: 2px;
 }
+#product-dialog #buy .buy-quantity {
+  margin-block-start: 6px;
+}
 #product-dialog #buy .quantity-stepper {
   grid-template-columns: 44px 24px 44px;
   border: 0;

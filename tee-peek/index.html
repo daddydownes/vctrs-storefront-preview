@@ -101,7 +101,7 @@ body.opening{overflow:hidden}
   if (new URLSearchParams(location.search).get('controls') === 'clean') {
     const styles = document.createElement('link');
     styles.rel = 'stylesheet';
-    styles.href = 'product-controls.css?v=36';
+    styles.href = 'product-controls.css?v=37';
     document.head.append(styles);
   }
 </script>
@@ -177,16 +177,9 @@ body.opening{overflow:hidden}
   </div>
   <form class="buy" id="buy">
     <div class="dialog-body">
-      <div class="gallery">
+      <div class="gallery" data-auto-gallery tabindex="0" role="group" aria-label="Product photos. Swipe or use the left and right arrow keys to browse.">
         <div class="gallery-stage">
           <img class="gallery-photo" id="gallery-photo" alt="" width="1067" height="1600" draggable="false">
-        </div>
-        <div class="gallery-meta">
-          <div class="gallery-controls" aria-label="Browse product photos">
-            <button class="gallery-nav" id="gallery-prev" type="button" aria-label="Previous photo"><svg class="action-arrow" aria-hidden="true"><use href="#arrow-right"/></svg></button>
-            <span class="gallery-count" id="gallery-count" aria-live="polite"></span>
-            <button class="gallery-nav" id="gallery-next" type="button" aria-label="Next photo"><svg class="action-arrow" aria-hidden="true"><use href="#arrow-right"/></svg></button>
-          </div>
         </div>
       </div>
       <div class="buy-details">
@@ -427,6 +420,6 @@ document.addEventListener('visibilitychange', () => {
   else if (campaignVisible && opener.hidden) playCampaign();
 });
 </script>
-<script src="shop.js?v=25"></script>
+<script src="shop.js?v=37"></script>
 </body>
 </html>
