@@ -1,0 +1,12 @@
+body.vault-open{overflow:hidden}
+#vault-shell{position:fixed;inset:0;width:100%;height:100%;height:100dvh;max-width:none;max-height:none;padding:0;border:0;margin:0;background:#000;color:#d4af5f;overflow:hidden}
+#vault-shell:not([open]){display:block;visibility:hidden;pointer-events:none}
+#vault-shell::backdrop{background:#000}
+#vault-shell iframe{position:absolute;inset:0;width:100%;height:100%;border:0;visibility:hidden}
+#vault-shell.vault-shell-ready iframe{visibility:visible}
+.vault-shell-curtain{position:absolute;z-index:2;inset:0;background:#000;opacity:1;pointer-events:none;transition:opacity 660ms cubic-bezier(.28,.04,.22,1)}
+.vault-shell-ready .vault-shell-curtain{opacity:0}
+#vault-shell .vault-shell-curtain.cover{opacity:1;transition-duration:420ms}
+.vault-shell-loading{position:absolute;z-index:3;bottom:28px;left:24px;right:24px;text-align:center;font:11px/1.6 monospace;letter-spacing:.1em}
+.vault-shell-back{position:absolute;z-index:3;top:max(24px,env(safe-area-inset-top));left:clamp(16px,3vw,38px);border:1px solid #d4af5f;border-radius:40px;padding:14px 18px;background:#e9cb92;color:#21180e;font:700 12px Arial,sans-serif;letter-spacing:.1em;cursor:pointer}
+@media(prefers-reduced-motion:reduce){.vault-shell-curtain{transition:none!important}}

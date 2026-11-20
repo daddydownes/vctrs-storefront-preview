@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow">
+<title>Order status — VCTRS</title>
+<link rel="icon" href="assets/v-star.svg" type="image/svg+xml">
+<link rel="stylesheet" href="order.css">
+<script src="order.js" defer></script>
+</head>
+<body>
+<header class="order-header">
+  <a class="order-logo" href="index.html#products" aria-label="VCTRS store"></a>
+  <a href="index.html#products">Back to store</a>
+</header>
+<main class="order-wrap">
+  <p class="order-kicker">VCTRS · Order status</p>
+  <h1 id="order-title">Your order</h1>
+  <p id="order-message" role="status">Loading your order…</p>
+  <div id="order-details" hidden>
+    <p class="order-reference" id="preview-order-note" hidden>Test order. Do not transfer money.</p>
+    <p class="order-reference">Order <strong id="order-reference"></strong></p>
+    <section class="order-panel" id="transfer" aria-labelledby="transfer-title" hidden>
+      <p class="order-kicker">Bank transfer</p>
+      <h2 id="transfer-title"><span id="transfer-title-prefix">Send</span> <span id="amount-due"></span></h2>
+      <p id="transfer-explanation">Use your banking app to pay the amount shown. Enter the unique reference exactly as shown so we can match your payment to your order.</p>
+      <dl id="bank-details"></dl>
+      <p class="order-muted" id="copy-message" role="status"></p>
+      <p class="order-muted" id="transfer-fulfillment">We’ll ship your order after we confirm the transfer.</p>
+    </section>
+    <p id="bank-unavailable" class="order-panel" hidden>Transfer details are unavailable right now. Please wait for an update before making a payment.</p>
+    <section class="order-panel" aria-labelledby="summary-title">
+      <h2 id="summary-title">Order summary</h2>
+      <ul id="order-items"></ul>
+      <dl class="order-totals">
+        <div><dt>Subtotal</dt><dd id="order-subtotal"></dd></div>
+        <div><dt>Shipping</dt><dd id="order-shipping"></dd></div>
+        <div class="order-total"><dt>Total (AUD)</dt><dd id="order-total"></dd></div>
+      </dl>
+      <p class="order-muted" id="tracking" hidden></p>
+    </section>
+  </div>
+  <button class="refresh-order" id="refresh-order" type="button" hidden>Refresh order status</button>
+</main>
+</body>
+</html>

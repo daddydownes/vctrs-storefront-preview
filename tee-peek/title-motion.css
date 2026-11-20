@@ -1,0 +1,34 @@
+#drop-title { position: relative; white-space: nowrap; }
+#drop-title.gold-letters { color: var(--gold); }
+#drop-title .title-word,
+#drop-title .title-ink {
+  display: inline-block;
+  position: relative;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+#drop-title > .title-word:nth-of-type(2),
+#drop-title .title-tracked > .title-word:nth-of-type(2) { font-style: italic; }
+#drop-title .title-tracked,
+#drop-title .title-outline {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  white-space: nowrap;
+  pointer-events: none;
+}
+#drop-title .title-outline {
+  color: transparent;
+  -webkit-text-stroke: max(1px, .012em) #f1d59a;
+}
+#drop-title .soft-gold-fill {
+  /* A soft ink edge, with room to paint the italic overhang. */
+  padding-inline: .23em;
+  margin-inline: -.23em;
+  mask-image: linear-gradient(to bottom, transparent 49%, #000 52%);
+  mask-size: 160% 240%;
+  mask-position: 50% 100%;
+  mask-repeat: no-repeat;
+  mask-clip: no-clip;
+}

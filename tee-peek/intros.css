@@ -1,0 +1,114 @@
+:root {
+  color-scheme: dark;
+  --ink: #141412;
+  --paper: #f4efe5;
+  --muted: #c2beb4;
+  --line: #49463f;
+  --gold: #f1d497;
+  --gutter: clamp(15px,3vw,58px);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--ink); color: var(--paper);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.studio {
+  width: min(100%, 1710px);
+  margin-inline: auto;
+  padding: 0 var(--gutter) max(22px,env(safe-area-inset-bottom));
+}
+.masthead, .identity, .review-tools {
+  display: flex; align-items: center;
+}
+.masthead {
+  min-height: 82px; border-bottom: 1px solid var(--line);
+  justify-content: space-between; gap: 16px;
+}
+.identity { gap: clamp(13px,2.25vw,34px); min-width: 0; }
+.wordmark {
+  width: clamp(66px,7.8vw,106px); height: 38px; flex: none;
+  background: var(--paper); mask: url('assets/wordmark.svg') center/contain no-repeat;
+}
+h1 {
+  margin: 0; border-left: 1px solid var(--line); padding-left: clamp(13px,2.25vw,34px);
+  font: 400 clamp(21px,2.2vw,35px)/1 Georgia, 'Times New Roman', serif;
+  letter-spacing: -.055em; white-space: nowrap;
+}
+.review-tools { gap: 4px; flex: none; }
+.review-tools button, .review-tools a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 14px; border: 0; background: transparent;
+  color: var(--paper); text-decoration: none; font: 600 14px/1 Arial,sans-serif; cursor: pointer;
+}
+.review-tools button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.review-tools [hidden] { display: none; }
+.review-tools a {
+  padding-inline: 17px; background: var(--paper); color: var(--ink); border-radius: 2px;
+}
+.review-tools a:hover { background: var(--gold); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.room {
+  display: grid; grid-template-columns: clamp(155px,15vw,232px) minmax(0,1fr);
+  gap: clamp(18px,2.8vw,48px); align-items: start; margin-top: clamp(19px,3.5vh,36px);
+}
+.takes { display: grid; }
+.takes a {
+  display: grid; align-content: center; gap: 6px; min-height: 72px;
+  padding: 12px 8px 12px 0;
+  border-top: 1px solid var(--line); color: var(--paper); text-decoration: none;
+}
+.takes a:last-child { border-bottom: 1px solid var(--line); }
+.takes a[aria-current] { border-top-color: var(--gold); }
+.takes a[aria-current] strong { color: var(--gold); }
+.takes a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.takes strong { font-size: clamp(16px,1.4vw,21px); letter-spacing: -.035em; font-weight: 600; }
+.takes span { color: var(--muted); font-size: 14px; line-height: 1.35; }
+.monitor {
+  background: #080807; box-shadow: 0 0 0 1px #3a3833;
+  width: 100%; aspect-ratio: 16 / 10; max-height: min(83svh, 940px);
+}
+.monitor iframe { display: block; border: 0; width: 100%; height: 100%; background: #000; }
+@media (max-width: 760px) {
+  .studio { padding-inline: max(12px, env(safe-area-inset-left)); }
+  .masthead { min-height: 59px; gap: 5px; }
+  .identity { gap: 10px; }
+  .wordmark { width: 60px; height: 28px; }
+  h1 { padding-left: 10px; font-size: 21px; }
+  .review-tools { gap: 0; }
+  .review-tools button, .review-tools a { padding-inline: 9px; font-size: 13px; }
+  .room { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; }
+  .takes { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 0 1px; width: 100%; }
+  .takes a, .takes a:last-child {
+    display: flex; text-align: center; align-items: center; justify-content: center;
+    border: 0; box-shadow: inset 0 -1px var(--line);
+    padding: 0 5px; min-height: 44px;
+  }
+  .takes a[aria-current] { box-shadow: inset 0 -2px var(--gold); }
+  .takes strong { font-size: 13px; letter-spacing: -.02em; }
+  .takes span { display: none; }
+}
+@media (max-width: 760px) and (orientation: portrait) {
+  .monitor {
+    aspect-ratio: auto;
+    height: max(calc(100svh - 148px), calc((100vw - 24px) * 1.5 + 2px));
+    max-height: none;
+  }
+}
+@media (max-height: 570px) and (orientation: landscape) {
+  .masthead { min-height: 50px; }
+  .room { margin-top: 10px; }
+  .takes a { min-height: 46px; padding-block: 6px; }
+  .takes span { display: none; }
+  .monitor { max-height: calc(100svh - 78px); }
+}
+@media (max-width: 360px) {
+  .masthead { min-height: 54px; }
+  .identity { gap: 7px; }
+  .wordmark { width: 49px; }
+  h1 { font-size: 18px; padding-left: 7px; }
+  .review-tools button, .review-tools a { padding-inline: 7px; }
+  .room { gap: 8px; margin-top: 6px; }
+  .takes { grid-template-columns: 1fr 1fr 1fr 1.2fr 1.2fr 1fr; }
+  .takes a { padding-inline: 1px; }
+  .takes strong { font-size: 12px; }
+}

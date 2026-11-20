@@ -1,0 +1,30 @@
+html:is(.vault-black-out, .vault-black-hold, .vault-black-in)::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: #000;
+}
+
+html.vault-black-out::after {
+  animation: vault-fade-to-black 420ms cubic-bezier(.28,.04,.22,1) both;
+}
+
+html.vault-black-in::after {
+  pointer-events: none;
+  animation: vault-reveal-from-black 660ms cubic-bezier(.28,.04,.22,1) both;
+}
+
+@keyframes vault-fade-to-black {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes vault-reveal-from-black {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:is(.vault-black-out, .vault-black-hold, .vault-black-in)::after { display: none; }
+}

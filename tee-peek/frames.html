@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Pick the last frame — VCTRS</title>
+<link rel="icon" href="assets/v-star.svg" type="image/svg+xml">
+<link rel="stylesheet" href="frame-picker.css">
+<script defer src="frames.js"></script><script defer src="frame-picker.js"></script>
+</head>
+<body>
+<main class="paper">
+  <header class="mast"><span class="brand" role="img" aria-label="VCTRS"></span><span>Campaign film</span></header>
+  <div class="intro"><h1>Pick the last frame</h1><p>The film cuts at five seconds. Pick an earlier smile and it holds through the cut.</p></div>
+  <fieldset class="choices">
+    <legend class="sr-only">Choose a frame</legend>
+    <label class="choice"><input type="radio" name="frame" value="A"><img src="assets/smiles/90-face.webp" alt="His head tips back in a laugh."><span class="choice-label"><b>A</b><strong>Head-back laugh</strong><time>3.60 s</time></span></label>
+    <label class="choice"><input type="radio" name="frame" value="B"><img src="assets/smiles/112-face.webp" alt="He faces the camera with a broad smile."><span class="choice-label"><b>B</b><strong>Facing camera</strong><time>4.48 s</time></span></label>
+    <label class="choice"><input type="radio" name="frame" value="C" checked><img src="assets/smiles/117-face.webp" alt="Still smiling, he starts to turn to his right."><span class="choice-label"><b>C</b><strong>Starting to turn</strong><time>4.68 s</time></span></label>
+    <label class="choice"><input type="radio" name="frame" value="D"><img src="assets/smiles/125-face.webp" alt="His face is in profile with visible motion blur."><span class="choice-label"><b>D</b><strong>At the cut</strong><time>5.00 s</time></span></label>
+  </fieldset>
+  <section aria-labelledby="selected-frame" class="proof">
+    <div class="proof-controls">
+      <h2 id="selected-frame" aria-live="polite">C · Starting to turn</h2>
+      <div class="actions">
+        <a id="watch-hold" class="action" href="shop.html?frame=C">Watch frame hold</a>
+        <a id="watch-photo" href="shop.html?frame=C&amp;finish=photo">Watch portrait finish</a>
+      </div>
+    </div>
+    <div class="prints">
+      <figure><figcaption>Desktop</figcaption><img id="wide-proof" src="assets/smiles/117-wide.webp" width="1920" height="1080" alt="Starting to turn in the full scene."></figure>
+      <figure><figcaption>Phone</figcaption><img id="phone-proof" src="assets/smiles/117-tall.webp" width="498" height="1080" alt="Starting to turn in the tall phone crop."></figure>
+    </div>
+  </section>
+</main>
+</body></html>
