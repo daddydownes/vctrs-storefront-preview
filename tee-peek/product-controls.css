@@ -26,7 +26,7 @@
   color: #908c84;
   background: transparent;
   border-color: #34322e;
-  text-decoration: line-through;
+  text-decoration: none;
 }
 #product-dialog #size-options .size-option:has(input:focus-visible),
 #product-dialog #buy button:focus-visible {
