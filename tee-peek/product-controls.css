@@ -1,4 +1,4 @@
-/* Gold is reserved for the purchase action and the selected size marker. */
+/* Size selection and the purchase action share the storefront gold. */
 #product-dialog #size-options {
   gap: 6px;
 }
@@ -18,8 +18,8 @@
   font: 600 14px/1 Arial, sans-serif;
 }
 #product-dialog #size-options .size-option:has(input:checked) {
-  background: #faf4e7;
-  border-color: #faf4e7;
+  background: var(--gold);
+  border-color: var(--gold);
   color: #211b12;
 }
 #product-dialog #size-options .size-option:has(input:checked)::after {
@@ -43,10 +43,11 @@
   outline-offset: 2px;
 }
 #product-dialog #buy .quantity-stepper {
-  grid-template-columns: 44px 34px 44px;
-  border: 1px solid #514e47;
-  border-radius: 24px;
-  background: #191918;
+  grid-template-columns: 44px 24px 44px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   padding: 0;
   gap: 0;
 }
@@ -54,7 +55,7 @@
   height: 44px;
   min-width: 44px;
   border: 0;
-  border-radius: 50%;
+  border-radius: 3px;
   background: transparent;
   box-shadow: none;
   color: #f5f0e8;
@@ -62,7 +63,7 @@
   font: 400 21px/1 Arial, sans-serif;
 }
 #product-dialog #buy .step-btn:disabled { color: #777269; opacity: 1; }
-#product-dialog #qty-value { border: 0; color: #fff7eb; font-weight: 700; }
+#product-dialog #qty-value { border: 0; padding: 0; background: transparent; color: #fff7eb; font: 600 16px/1 Arial, sans-serif; font-variant-numeric: tabular-nums; }
 #product-dialog #buy .add {
   min-height: 50px;
   padding: 10px 16px;
@@ -78,6 +79,6 @@
 #product-dialog #buy #add-total:not(:empty) { padding-left: 14px; border-left: 1px solid #806b464f; }
 @media (hover:hover) {
   #product-dialog #size-options .size-option:hover:has(input:enabled) { border-color: #d8bc86; }
-  #product-dialog #buy .step-btn:hover:enabled { background: #37332b; }
+  #product-dialog #buy .step-btn:hover:enabled { color: var(--gold); }
   #product-dialog #buy .add:hover:enabled { background: #f5e3bf; }
 }
