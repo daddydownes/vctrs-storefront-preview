@@ -13,6 +13,7 @@ const goldLetters = selectedIntro === 'gold-aperture';
 const teePeek = goldLetters && (smileParams.get('preview') === 'tee-peek' || !smileParams.has('intro'));
 document.body.classList.toggle('tee-peek', teePeek);
 const intro = goldLetters ? 'aperture' : selectedIntro;
+const originalIntro = !smileParams.has('intro') && smileParams.get('opening') !== 'campaign';
 heading.classList.toggle('gold-letters', goldLetters);
 const polishedGold = intro === 'gold-relay';
 const campaign = photo.closest('.campaign');
@@ -106,7 +107,8 @@ function playOpening() {
   titleMotion = createTitleMotion(heading, intro);
   titleMotion.seek(0);
   window.scrollTo({top:0, behavior:'instant'});
-  document.body.classList.toggle('film-timed-header', goldLetters);
+  if (originalIntro) document.body.append(opener);
+  document.body.classList.toggle('film-timed-header', goldLetters && !originalIntro);
   document.body.classList.add('opening');
   store.inert = true;
   opener.hidden = false;
@@ -115,7 +117,9 @@ function playOpening() {
   openerFrame.tabIndex = -1;
   openerFrame.setAttribute('aria-hidden', 'true');
   openerFrame.allow = 'autoplay';
-  openerFrame.src = 'production-opener.html?embedded=1&hold=' + chosenSmile.frame + '&intro=' + intro;
+  openerFrame.src = originalIntro
+    ? 'original-opener.html?embedded=1'
+    : 'production-opener.html?embedded=1&hold=' + chosenSmile.frame + '&intro=' + intro;
   opener.append(openerFrame);
   armOpeningTimeout();
 }
