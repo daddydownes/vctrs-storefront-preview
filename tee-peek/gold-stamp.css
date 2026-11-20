@@ -1,0 +1,71 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap");
+
+:is(.gold-stamp .stamp-card, #gold:checked ~ .products article) :is(.caption, .detail) {
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  flex: 1;
+  background: #100d09;
+  padding: 12px 9px 14px;
+}
+
+:is(.gold-stamp .stamp-card, #gold:checked ~ .products article) :is(h2, .product-name) {
+  font: 700 clamp(19px, 5.15vw, 44px)/.99 "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: .016em;
+  overflow-wrap: break-word;
+}
+
+:is(.gold-stamp .stamp-card, #gold:checked ~ .products article) .price {
+  justify-self: start;
+  margin-top: 9px;
+  color: #f5e2ba;
+  font: 700 clamp(26px, 6.4vw, 36px)/1 "Barlow Condensed", Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+:is(.gold-stamp .stamp-card, #gold:checked ~ .products article) .currency {
+  vertical-align: .39em;
+  margin-inline-end: .13em;
+  color: var(--gold);
+  font: 700 .52em/1 Arial, sans-serif;
+}
+
+#gold:checked ~ .products .cents { display: none; }
+
+:is(.gold-stamp .stamp-card, #gold:checked ~ .products article) :is(.product-link, .view) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  width: min(100%, 174px);
+  min-height: 44px;
+  margin-top: 13px;
+  padding: 7px 10px;
+  border: 1px solid #846b43;
+  border-radius: 7px;
+  background: linear-gradient(#27211a, #100d09 68%, #2c2011);
+  box-shadow: inset 0 1px #fff2;
+  color: var(--paper);
+  font-size: clamp(11px, 3vw, 13px);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+:is(.gold-stamp .stamp-card, #gold:checked ~ .products article) :is(.product-link, .view):hover {
+  border-color: var(--gold);
+  background: #302515;
+}
+
+.product-link span { color: var(--gold); font-size: 1.25em; line-height: 1; }
+.gold-stamp .stamp-card .product-open { display: flex; flex-direction: column; height: 100%; }
+.gold-stamp .stamp-card .tee-photos { flex: none; width: 100%; }
+.gold-stamp .stamp-card .detail { align-self: stretch; }
+.gold-stamp .stamp-card :is(.view-depth, .view-surface, .view-light) { display: none; }
+.gold-stamp .stamp-card .view-label { padding: 0; }
+
+@media (min-width: 550px) {
+  :is(.gold-stamp .stamp-card, #gold:checked ~ .products article) :is(.caption, .detail) {
+    padding-inline: 18px;
+  }
+}

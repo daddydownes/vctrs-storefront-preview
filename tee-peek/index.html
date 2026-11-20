@@ -82,7 +82,16 @@ body.opening{overflow:hidden}
 </style>
 <link rel="stylesheet" href="freeze.css?v=original-card-peek">
 <link rel="stylesheet" href="title-motion.css?v=solid-gold-aperture">
-<script>document.documentElement.classList.add('intro-pending');</script>
+<script>
+  document.documentElement.classList.add('intro-pending');
+  if (smileParams.get('lettering') === 'gold') {
+    document.documentElement.classList.add('gold-stamp');
+    const stampStyles = document.createElement('link');
+    stampStyles.rel = 'stylesheet';
+    stampStyles.href = 'gold-stamp.css';
+    document.head.append(stampStyles);
+  }
+</script>
 </head>
 <body>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute">
@@ -120,16 +129,16 @@ body.opening{overflow:hidden}
     <section id="products" class="products wrap" aria-label="New drop products">
       <p id="catalog-message" class="catalog-message" role="status" hidden></p>
       <div class="cards">
-        <article class="card" data-product="mesh">
+        <article class="card stamp-card" data-product="mesh">
           <button class="product-open" type="button" aria-label="View V Star Mesh Tee">
             <span class="tee-photos" aria-hidden="true"><img class="photo is-current" src="assets/optimized/mesh-640.webp" srcset="assets/optimized/mesh-640.webp 640w, assets/optimized/mesh.webp 1067w" sizes="(max-width: 650px) calc((100vw - 38px) / 2), 550px" loading="lazy" decoding="async" alt="V Star Mesh Tee with a large V and star on the front" width="1067" height="1600"></span>
-            <span class="detail"><span class="product-name">V Star Mesh Tee</span><span class="price">$60</span><span class="view"><span class="view-depth" aria-hidden="true"></span><span class="view-surface" aria-hidden="true"></span><span class="view-light" aria-hidden="true"></span><span class="view-label">View product</span><span class="view-icon" aria-hidden="true"><svg class="action-arrow"><use href="#arrow-right"/></svg></span></span></span>
+            <span class="detail"><span class="product-name">V Star Mesh Tee</span><span class="price"><span class="currency">$</span>60</span><span class="view"><span class="view-depth" aria-hidden="true"></span><span class="view-surface" aria-hidden="true"></span><span class="view-light" aria-hidden="true"></span><span class="view-label">View product</span><span class="view-icon" aria-hidden="true"><svg class="action-arrow"><use href="#arrow-right"/></svg></span></span></span>
           </button>
         </article>
-        <article class="card" data-product="badge">
+        <article class="card stamp-card" data-product="badge">
           <button class="product-open" type="button" aria-label="View Black Badge Tee">
             <span class="tee-photos" aria-hidden="true"><img class="photo is-current" src="assets/optimized/badge-640.webp" srcset="assets/optimized/badge-640.webp 640w, assets/optimized/badge.webp 1067w" sizes="(max-width: 650px) calc((100vw - 38px) / 2), 550px" loading="lazy" decoding="async" alt="Black Badge Tee with a white VCTRS badge on the chest" width="1067" height="1600"></span>
-            <span class="detail"><span class="product-name">Black Badge Tee</span><span class="price">$50</span><span class="view"><span class="view-depth" aria-hidden="true"></span><span class="view-surface" aria-hidden="true"></span><span class="view-light" aria-hidden="true"></span><span class="view-label">View product</span><span class="view-icon" aria-hidden="true"><svg class="action-arrow"><use href="#arrow-right"/></svg></span></span></span>
+            <span class="detail"><span class="product-name">Black Badge Tee</span><span class="price"><span class="currency">$</span>50</span><span class="view"><span class="view-depth" aria-hidden="true"></span><span class="view-surface" aria-hidden="true"></span><span class="view-light" aria-hidden="true"></span><span class="view-label">View product</span><span class="view-icon" aria-hidden="true"><svg class="action-arrow"><use href="#arrow-right"/></svg></span></span></span>
           </button>
         </article>
         <article class="card" data-product="hat">
@@ -300,6 +309,6 @@ body.opening{overflow:hidden}
 </dialog>
 <script src="intro-motion.js?v=solid-gold-aperture"></script>
 <script src="freeze.js?v=tee-peek"></script>
-<script src="shop.js?v=24"></script>
+<script src="shop.js?v=25"></script>
 </body>
 </html>

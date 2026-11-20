@@ -396,7 +396,14 @@ function refreshCatalog() {
         }
         if (Number.isInteger(live?.priceCents) && live.priceCents > 0) product.priceCents = live.priceCents;
         const card = document.querySelector(`.card[data-product="${id}"]`);
-        card.querySelector('.price').textContent = money(product.priceCents);
+        const price = card.querySelector('.price');
+        const currency = price.querySelector('.currency');
+        if (currency && document.documentElement.classList.contains('gold-stamp')) {
+          const amount = productMoney(product.priceCents).slice(currency.textContent.length);
+          price.replaceChildren(currency, amount);
+        } else {
+          price.textContent = money(product.priceCents);
+        }
         card.querySelector('.view-label').textContent = Object.values(product.stock).some(Boolean) ? 'View product' : 'Sold out';
       }
       let changed = false;
