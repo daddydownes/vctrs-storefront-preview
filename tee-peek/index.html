@@ -393,7 +393,8 @@ window.addEventListener('message', event => {
     revealStore();
   }
 });
-if (!reducedMotion.matches && !inDevicePreview && !location.hash) playOpening();
+const campaignEntry = !location.hash || location.hash === '#drop-title';
+if (!reducedMotion.matches && !inDevicePreview && campaignEntry) playOpening();
 else if (location.hash !== '#vault') playCampaign();
 window.addEventListener('vctrs-vault-visibility', event => {
   if (event.detail.active) campaign.pause();
