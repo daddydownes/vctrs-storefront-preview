@@ -97,6 +97,14 @@ body.opening{overflow:hidden}
 </style>
 <link rel="stylesheet" href="gold-stamp.css">
 <link rel="stylesheet" href="release-preview.css?v=34">
+<script>
+  if (new URLSearchParams(location.search).get('controls') === 'clean') {
+    const styles = document.createElement('link');
+    styles.rel = 'stylesheet';
+    styles.href = 'product-controls.css';
+    document.head.append(styles);
+  }
+</script>
 </head>
 <body>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute">

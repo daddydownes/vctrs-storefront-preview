@@ -1,0 +1,83 @@
+/* Gold is reserved for the purchase action and the selected size marker. */
+#product-dialog #size-options {
+  gap: 6px;
+}
+#product-dialog #size-options .size-option {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 46px;
+  min-height: 46px;
+  padding: 5px 12px;
+  border: 1px solid #514e47;
+  border-radius: 5px;
+  background: #191918;
+  box-shadow: none;
+  text-shadow: none;
+  color: #f6f2eb;
+  font: 600 14px/1 Arial, sans-serif;
+}
+#product-dialog #size-options .size-option:has(input:checked) {
+  background: #faf4e7;
+  border-color: #faf4e7;
+  color: #211b12;
+}
+#product-dialog #size-options .size-option:has(input:checked)::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: #806237;
+}
+#product-dialog #size-options .size-option:has(input:disabled) {
+  color: #908c84;
+  background: transparent;
+  border-color: #34322e;
+  text-decoration: line-through;
+}
+#product-dialog #size-options .size-option:has(input:focus-visible),
+#product-dialog #buy button:focus-visible {
+  outline: 2px solid #f4dba9;
+  outline-offset: 2px;
+}
+#product-dialog #buy .quantity-stepper {
+  grid-template-columns: 44px 34px 44px;
+  border: 1px solid #514e47;
+  border-radius: 24px;
+  background: #191918;
+  padding: 0;
+  gap: 0;
+}
+#product-dialog #buy .step-btn {
+  height: 44px;
+  min-width: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+  color: #f5f0e8;
+  text-shadow: none;
+  font: 400 21px/1 Arial, sans-serif;
+}
+#product-dialog #buy .step-btn:disabled { color: #777269; opacity: 1; }
+#product-dialog #qty-value { border: 0; color: #fff7eb; font-weight: 700; }
+#product-dialog #buy .add {
+  min-height: 50px;
+  padding: 10px 16px;
+  border: 1px solid #d8bc86;
+  border-radius: 5px;
+  background: #ead6ad;
+  color: #241c11;
+  box-shadow: none;
+  text-shadow: none;
+  font: 700 15px/1.2 Arial, sans-serif;
+}
+#product-dialog #buy .add:disabled { background: #292724; border-color: #45413b; color: #b8b2a8; }
+#product-dialog #buy #add-total:not(:empty) { padding-left: 14px; border-left: 1px solid #806b464f; }
+@media (hover:hover) {
+  #product-dialog #size-options .size-option:hover:has(input:enabled) { border-color: #d8bc86; }
+  #product-dialog #buy .step-btn:hover:enabled { background: #37332b; }
+  #product-dialog #buy .add:hover:enabled { background: #f5e3bf; }
+}
