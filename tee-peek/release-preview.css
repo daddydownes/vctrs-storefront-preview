@@ -30,7 +30,7 @@ html.gold-stamp #products .stamp-card .product-open:focus-visible .view {
   .stamp-card .view-icon { transition: transform .18s ease-out; }
   .stamp-card .product-open:hover .view-icon { transform: translateX(2px); }
 }
-/* One linked headline over the campaign film. */
+/* Headline over the campaign film. */
 .campaign::after {
   content: "";
   position: absolute;
@@ -39,22 +39,17 @@ html.gold-stamp #products .stamp-card .product-open:focus-visible .view {
   pointer-events: none;
 }
 .campaign-copy { width: min(1120px, calc(100% - 40px)); padding-bottom: 22px; }
-#drop-title { margin: 0; font: inherit; letter-spacing: normal; text-shadow: none; text-transform: none; }
-.campaign-copy .scroll-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 13px;
+#drop-title {
+  margin: 0;
   padding: 3px 0;
-  min-height: 50px;
   color: #fff9eb;
   font: 700 clamp(36px, 10vw, 64px)/1.05 Arial, sans-serif;
   letter-spacing: -.055em;
   text-transform: none;
+  text-shadow: none;
 }
-.campaign-copy .drop-cue { width: 26px; height: 26px; color: #ead6ad; }
-body .campaign-copy .drop-cue svg { width: 20px; height: 20px; transform: none; animation: none; stroke-width: 2; }
 @media (prefers-reduced-motion: no-preference) {
-  body:not(.opening) .campaign-copy .scroll-link { animation: shop-reveal .65s .14s cubic-bezier(.18,.72,.18,1) backwards; }
+  body:not(.opening) #drop-title { animation: shop-reveal .65s .14s cubic-bezier(.18,.72,.18,1) backwards; }
   @keyframes shop-reveal { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 }
 

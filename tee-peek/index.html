@@ -31,14 +31,6 @@ button:focus-visible,a:focus-visible,select:focus-visible{outline:2px solid var(
 .campaign-play:hover{background:var(--gold);color:#21180e}
 h1,h2,h3,p{margin:0}
 h1{font:900 clamp(56px,11vw,142px)/.84 Arial,sans-serif;letter-spacing:-.085em;text-transform:uppercase;margin:7px 0 16px;text-shadow:0 2px 20px #0005}
-.scroll-link{display:inline-flex;align-items:center;gap:14px;min-height:50px;font-size:11px;font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.16em;padding:0 3px 0 0}
-.drop-cue{display:grid;place-items:center;width:45px;height:45px;color:var(--gold)}
-.drop-cue svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:square;stroke-linejoin:miter;transform:scaleX(1.35)}
-.scroll-link:is(:hover,:focus-visible) .drop-cue{color:#ffe2ac}
-@media(prefers-reduced-motion:no-preference){
- body:not(.opening) .drop-cue svg{animation:drop-nudge 820ms ease-out 2}
- @keyframes drop-nudge{0%,100%{transform:translateY(0) scaleX(1.35)}45%{transform:translateY(6px) scaleX(1.5)}}
-}
 .products{padding:20px 0 38px;scroll-margin-top:66px}
 .cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,2vw,22px)}
 .card{min-width:0;background:#000;border:0}
@@ -96,7 +88,7 @@ body.opening{overflow:hidden}
 }
 </style>
 <link rel="stylesheet" href="gold-stamp.css">
-<link rel="stylesheet" href="release-preview.css?v=34">
+<link rel="stylesheet" href="release-preview.css?v=44">
 <script>
   if (new URLSearchParams(location.search).get('controls') === 'clean') {
     const styles = document.createElement('link');
@@ -130,7 +122,7 @@ body.opening{overflow:hidden}
       <video id="campaign" data-src="assets/optimized/nov7-reel-trimmed-wide.mp4" data-compact-src="assets/optimized/nov7-reel-trimmed-compact.mp4" poster="assets/optimized/nov7-reel-poster.jpg" muted playsinline loop preload="none" aria-hidden="true"></video>
       <button class="campaign-play" type="button" hidden>Play video</button>
       <div class="campaign-copy wrap">
-        <h1 id="drop-title"><a class="scroll-link" href="#products">Shop the drop <span class="drop-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span></a></h1>
+        <h1 id="drop-title" tabindex="-1">Shop the drop</h1>
       </div>
     </section>
     <section id="products" class="products wrap" aria-label="New drop products">
@@ -328,7 +320,7 @@ if (inDevicePreview) archiveLink.href = 'vault-preview/index.html?device=1&v=2#v
 function hideCampaignPlay(){
   clearTimeout(campaignStartTimer);
   if (document.activeElement === campaignPlay) {
-    document.querySelector('.scroll-link').focus({preventScroll:true});
+    document.querySelector('#drop-title').focus({preventScroll:true});
   }
   campaignPlay.hidden = true;
 }
