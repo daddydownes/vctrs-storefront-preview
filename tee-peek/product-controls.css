@@ -85,3 +85,77 @@
   #product-dialog #buy .step-btn:hover:enabled { color: var(--gold); }
   #product-dialog #buy .add:hover:enabled { background: #f5e3bf; }
 }
+
+/* Keep the product choices and purchase action on the same alignment. */
+#product-dialog .buy-details { gap: 12px; }
+#product-dialog .size-field { margin-top: 0; }
+#product-dialog #buy .buy-quantity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid #34312c;
+  padding-top: 4px;
+}
+#product-dialog #quantity-label,
+#product-dialog .size-field legend {
+  color: #c7c1b7;
+  font: 600 13px/1.2 Arial, sans-serif;
+  letter-spacing: normal;
+  text-transform: none;
+}
+#product-dialog .size-field legend {
+  position: static;
+  width: auto;
+  height: auto;
+  clip-path: none;
+  margin-bottom: 8px;
+}
+#product-dialog #size-options::before { content: none; }
+#product-dialog #size-options .size-option { flex: 1; }
+#product-dialog .stock-note:empty { display: none; }
+
+@media (max-width: 650px) and (orientation: portrait) {
+  #product-dialog {
+    --panel-pad: clamp(16px, 4.5vw, 24px);
+    height: 100dvh;
+    max-height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+  #product-dialog .dialog-bar { top: max(10px, env(safe-area-inset-top)); right: 12px; }
+  #product-dialog #buy { flex: 1; }
+  #product-dialog .dialog-body {
+    flex: 1;
+    grid-template-rows: minmax(160px, 1fr) auto;
+    gap: 16px;
+    padding: 0 0 6px;
+  }
+  #product-dialog .gallery { min-height: 0; display: block; }
+  #product-dialog .gallery-stage { width: 100%; height: 100%; }
+  #product-dialog .buy-details { padding-inline: var(--panel-pad); }
+  #product-dialog .buy-details h2 { font-size: clamp(22px, 6vw, 30px); }
+  #product-dialog .dialog-actions { padding-top: 8px; }
+}
+
+@media (min-width: 651px) and (min-height: 501px) {
+  #product-dialog {
+    width: min(1120px, calc(100% - 48px));
+    --panel-pad: clamp(22px, 3vw, 42px);
+  }
+  #product-dialog #buy {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    grid-template-rows: 1fr auto auto 1fr;
+    max-height: calc(100dvh - 38px);
+    overflow-y: auto;
+  }
+  #product-dialog .dialog-body { display: contents; }
+  #product-dialog .gallery { grid-area: 1 / 1 / 5 / 2; align-self: stretch; }
+  #product-dialog .gallery-stage { width: 100%; height: min(78dvh, 780px); }
+  #product-dialog .buy-details { grid-area: 2 / 2; padding: 48px var(--panel-pad) 0; }
+  #product-dialog .dialog-actions {
+    grid-area: 3 / 2;
+    display: block;
+    padding: 16px var(--panel-pad) 28px;
+  }
+}
