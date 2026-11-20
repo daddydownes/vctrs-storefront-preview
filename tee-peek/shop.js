@@ -203,10 +203,17 @@ function renderSizeOptions() {
     radio.value = variant;
     radio.checked = variant === activeVariant;
     radio.disabled = !catalogReady || !storeOpen || remaining(activeProduct, variant) === 0;
-    if (radio.disabled) radio.setAttribute('aria-label', variant + ', unavailable');
+    const soldOut = catalogReady && products[activeProduct].stock[variant] === 0;
+    if (radio.disabled) radio.setAttribute('aria-label', variant + (soldOut ? ', sold out' : ', unavailable'));
     const label = document.createElement('span');
     label.textContent = variant;
     option.append(radio, label);
+    if (soldOut) {
+      const status = document.createElement('small');
+      status.className = 'size-status';
+      status.textContent = 'Sold out';
+      option.append(status);
+    }
     return option;
   })));
   renderSelection();
