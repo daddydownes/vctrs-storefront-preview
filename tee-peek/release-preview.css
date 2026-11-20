@@ -1,6 +1,5 @@
 /* The entire product card remains a single keyboard and touch target. */
-html.gold-stamp #products .stamp-card .view,
-html.gold-stamp #previous-drops .vault-link .vault-action {
+html.gold-stamp #products .stamp-card .view {
   min-height: 46px;
   width: min(100%, 188px);
   padding: 0 5px 0 13px;
@@ -20,14 +19,12 @@ html.gold-stamp #products .stamp-card .view-icon {
   border: 0;
 }
 html.gold-stamp #products .stamp-card .view-icon svg { filter: none; }
-html.gold-stamp #products .stamp-card .product-open:focus-visible .view,
-html.gold-stamp #previous-drops .vault-link:focus-visible .vault-action {
+html.gold-stamp #products .stamp-card .product-open:focus-visible .view {
   outline: 2px solid white;
   outline-offset: 3px;
 }
 @media (hover:hover) {
-  html.gold-stamp #products .stamp-card .product-open:hover .view,
-html.gold-stamp #previous-drops .vault-link:hover .vault-action { background: #f6e6c7; }
+  html.gold-stamp #products .stamp-card .product-open:hover .view { background: #f6e6c7; }
 }
 @media (prefers-reduced-motion:no-preference) {
   .stamp-card .view-icon { transition: transform .18s ease-out; }
@@ -88,14 +85,32 @@ html.gold-stamp #previous-drops .vault-link:hover .vault-action { background: #f
   .release-preview .scroll-link { grid-area: 4 / 1; justify-self: start; padding: 0; margin-top: 6px; }
 }
 
-html.gold-stamp #previous-drops .vault-action {
+/* The Vault is an archive entrance within the full clickable banner. */
+html.gold-stamp #previous-drops .vault-link .vault-action {
   display: inline-flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
+  min-height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #f5f0e8;
+  font: 700 12px/1.2 Arial, sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-shadow: none;
 }
 html.gold-stamp #previous-drops .vault-action .action-arrow {
-  width: 31px;
-  height: 16px;
-  color: inherit;
+  width: 30px;
+  height: 30px;
+  padding: 6px;
+  color: #e9cb92;
+  border: 1px solid #a58e64;
+  border-radius: 50%;
+}
+html.gold-stamp #previous-drops .vault-link:is(:hover, :focus-visible) .action-arrow {
+  background: #e9cb92;
+  color: #21180e;
 }
