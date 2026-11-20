@@ -1051,3 +1051,9 @@ async function refreshPaymentHold() {
 }
 document.addEventListener('visibilitychange', refreshPaymentHold);
 setInterval(refreshPaymentHold, 60000);
+
+const linkedProduct = new URLSearchParams(location.search).get('product');
+if (location.hash === '#products' && Object.hasOwn(products, linkedProduct)) {
+  const linkedButton = document.querySelector(`[data-product="${linkedProduct}"] .product-open`);
+  if (linkedButton) openProduct(linkedButton);
+}

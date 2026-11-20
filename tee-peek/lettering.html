@@ -33,9 +33,16 @@
   article h2,article p{margin:0}
 
   #gold:checked~.notes .gold,#lookbook:checked~.notes .lookbook,#ticket:checked~.notes .ticket{display:block}
-  #gold:checked~.products .caption{background:#100d09;padding:12px 9px 15px;border-bottom:1px solid #896f4a}
+  .product-link{display:none}
+  #gold:checked~.products article{display:flex;flex-direction:column;align-self:stretch}
+  #gold:checked~.products .caption{display:grid;grid-template-rows:1fr auto auto;flex:1;background:#100d09;padding:12px 9px 14px;border-bottom:1px solid #896f4a}
   #gold:checked~.products h2{font:700 clamp(19px,5.15vw,44px)/.99 "Barlow Condensed","Arial Narrow",Arial,sans-serif;color:var(--gold);text-transform:uppercase;letter-spacing:.016em;overflow-wrap:break-word}
-  #gold:checked~.products .price{margin-top:8px;font-size:clamp(12px,2.6vw,15px);font-variant-numeric:tabular-nums}
+  #gold:checked~.products .price{justify-self:start;margin-top:9px;color:#f5e2ba;font:700 clamp(26px,6.4vw,36px)/1 "Barlow Condensed",Arial,sans-serif;font-variant-numeric:tabular-nums}
+  #gold:checked~.products .currency{vertical-align:.39em;margin-inline-end:.13em;color:var(--gold);font:700 .52em/1 Arial,sans-serif}
+  #gold:checked~.products .cents{display:none}
+  #gold:checked~.products .product-link{display:flex;align-items:center;justify-content:space-between;gap:5px;width:min(100%,174px);min-height:44px;margin-top:13px;padding:7px 10px;border:1px solid #846b43;border-radius:7px;background:linear-gradient(#27211a,#100d09 68%,#2c2011);box-shadow:inset 0 1px #fff2;color:var(--paper);font-size:clamp(11px,3vw,13px);font-weight:700;text-decoration:none}
+  #gold:checked~.products .product-link:hover{border-color:var(--gold);background:#302515}
+  .product-link span{color:var(--gold);font-size:1.25em;line-height:1}
   @media (prefers-reduced-motion:no-preference) {
     #gold:checked~.products .caption{animation:gold-in .65s ease-out both}
     #gold:checked~.products h2{transition:text-shadow .25s ease}
@@ -70,18 +77,26 @@
     <input type="radio" id="lookbook" name="lettering" value="lookbook"><label for="lookbook">Lookbook</label>
     <input type="radio" id="ticket" name="lettering" value="ticket"><label for="ticket">Price Ticket</label>
     <div class="notes">
-      <p class="gold">Tall gold lettering with a soft glow. The price sits underneath.</p>
+      <p class="gold">Tall gold lettering with a soft glow and a bolder price.</p>
       <p class="lookbook">Italic serif over the photo, with the price in small gold type.</p>
       <p class="ticket">A cream label with a bold name and a separate receipt-style price.</p>
     </div>
     <section class="products" aria-label="Tee card previews">
       <article>
         <img src="assets/optimized/mesh-640.webp" width="640" height="960" alt="Model wearing the V Star Mesh Tee">
-        <div class="caption"><h2>V Star Mesh Tee</h2><p class="price">$60.00</p></div>
+        <div class="caption">
+          <h2>V Star Mesh Tee</h2>
+          <p class="price"><span class="currency">$</span><span>60</span><span class="cents">.00</span></p>
+          <a class="product-link" href="shop.html?product=mesh#products" aria-label="View V Star Mesh Tee">View product <span aria-hidden="true">→</span></a>
+        </div>
       </article>
       <article>
         <img src="assets/optimized/badge-640.webp" width="640" height="960" alt="Model wearing the Black Badge Tee">
-        <div class="caption"><h2>Black Badge Tee</h2><p class="price">$50.00</p></div>
+        <div class="caption">
+          <h2>Black Badge Tee</h2>
+          <p class="price"><span class="currency">$</span><span>50</span><span class="cents">.00</span></p>
+          <a class="product-link" href="shop.html?product=badge#products" aria-label="View Black Badge Tee">View product <span aria-hidden="true">→</span></a>
+        </div>
       </article>
     </section>
   </div>
