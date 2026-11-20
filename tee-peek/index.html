@@ -96,6 +96,7 @@ body.opening{overflow:hidden}
 }
 </style>
 <link rel="stylesheet" href="gold-stamp.css">
+<link rel="stylesheet" href="release-preview.css">
 </head>
 <body>
 <svg aria-hidden="true" width="0" height="0" style="position:absolute">
@@ -309,6 +310,12 @@ body.opening{overflow:hidden}
 <div class="opener" hidden>
 </div>
 <script>
+if (new URLSearchParams(location.search).get('hero') === 'release') {
+  document.documentElement.classList.add('release-preview');
+  const accent = document.createElement('em');
+  accent.textContent = 'Drop';
+  document.getElementById('drop-title').replaceChildren('New ', accent);
+}
 const opener = document.querySelector('.opener');
 const messageOrigin = location.protocol === 'file:' ? '*' : location.origin;
 const openerOrigin = location.protocol === 'file:' ? 'null' : location.origin;
