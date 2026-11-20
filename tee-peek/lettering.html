@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>VCTRS · Tee lettering</title>
+<link rel="icon" href="assets/v-star.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700&display=swap">
+<style>
+  :root{color-scheme:dark;--gold:#e9cb92;--paper:#f5f0e8;--muted:#bdb5a7;--ink:#0a0908}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--paper);font:16px/1.4 Arial,sans-serif}
+  main{width:min(100% - 30px,816px);margin:0 auto;padding:clamp(22px,5vh,52px) 0 40px}
+  a{color:inherit;text-underline-offset:4px}
+  a:focus-visible,input:focus-visible+label{outline:2px solid var(--gold);outline-offset:3px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:clamp(24px,4vh,36px)}
+  header img{display:block;width:78px;filter:brightness(0) invert(.94)}
+  header a{color:var(--muted);font-size:.8rem}
+  h1{margin:0 0 16px;font-size:clamp(30px,6vw,54px);line-height:1.03;letter-spacing:-.05em}
+  .options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;position:relative}
+  .options input{position:absolute;width:1px;height:1px;margin:0;opacity:0}
+  .options label{display:grid;place-items:center;min-height:44px;padding:6px 3px;border:1px solid #393431;color:var(--muted);text-align:center;font-size:clamp(11px,3vw,14px);font-weight:700;cursor:pointer}
+  .options label:hover{color:var(--paper);border-color:var(--muted)}
+  .options input:checked+label{color:#15100b;background:var(--gold);border-color:var(--gold)}
+  .notes{grid-column:1/-1;margin:7px 0 12px;color:var(--muted);font-size:.81rem}
+  .notes p{display:none;margin:0}
+  .products{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(8px,2vw,18px)}
+  article{position:relative;align-self:start;min-width:0}
+  article img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center 35%}
+  article h2,article p{margin:0}
+
+  #gold:checked~.notes .gold,#lookbook:checked~.notes .lookbook,#ticket:checked~.notes .ticket{display:block}
+  #gold:checked~.products .caption{background:#100d09;padding:12px 9px 15px;border-bottom:1px solid #896f4a}
+  #gold:checked~.products h2{font:700 clamp(19px,5.15vw,44px)/.99 "Barlow Condensed","Arial Narrow",Arial,sans-serif;color:var(--gold);text-transform:uppercase;letter-spacing:.016em;overflow-wrap:break-word}
+  #gold:checked~.products .price{margin-top:8px;font-size:clamp(12px,2.6vw,15px);font-variant-numeric:tabular-nums}
+  @media (prefers-reduced-motion:no-preference) {
+    #gold:checked~.products .caption{animation:gold-in .65s ease-out both}
+    #gold:checked~.products h2{transition:text-shadow .25s ease}
+    #gold:checked~.products article:hover h2{text-shadow:0 0 18px #e9cb925e}
+    @keyframes gold-in{from{opacity:.52;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+  }
+
+  #lookbook:checked~.products .caption{position:absolute;inset:auto 0 0;min-height:39%;display:flex;flex-direction:column;justify-content:flex-end;padding:18px 9px 12px;background:linear-gradient(transparent,#060402e3 61%,#060402)}
+  #lookbook:checked~.products h2{font:italic 400 clamp(18px,5.8vw,43px)/.99 Georgia,serif;letter-spacing:-.035em;text-wrap:balance}
+  #lookbook:checked~.products .price{margin-top:7px;color:var(--gold);font-size:clamp(11px,2.7vw,14px);font-variant-numeric:tabular-nums}
+
+  #ticket:checked~.products .caption{display:grid;grid-template-columns:minmax(0,1fr) max-content;min-height:62px;background:#eee4d3;color:#19150f}
+  #ticket:checked~.products h2{align-self:center;padding:9px 7px;font:700 clamp(12px,3.35vw,26px)/1.08 Arial,sans-serif;letter-spacing:-.04em}
+  #ticket:checked~.products .price{display:grid;place-items:center;padding:0 clamp(6px,1.55vw,14px);border-left:1px dashed #8d7f68;font:600 clamp(11px,2.65vw,16px)/1.1 ui-monospace,Menlo,monospace;white-space:nowrap}
+
+  @media (min-width:550px) {
+    #gold:checked~.products .caption{padding-inline:18px}
+    #lookbook:checked~.products .caption{padding:24px 19px 18px}
+    #ticket:checked~.products h2{padding-inline:16px}
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="assets/wordmark.svg" alt="VCTRS" width="78" height="28">
+    <a href="./">Back to the drop</a>
+  </header>
+  <h1 id="heading">Tee lettering</h1>
+  <div class="options" role="radiogroup" aria-labelledby="heading">
+    <input type="radio" id="gold" name="lettering" value="gold" checked><label for="gold">Gold Stamp</label>
+    <input type="radio" id="lookbook" name="lettering" value="lookbook"><label for="lookbook">Lookbook</label>
+    <input type="radio" id="ticket" name="lettering" value="ticket"><label for="ticket">Price Ticket</label>
+    <div class="notes">
+      <p class="gold">Tall gold lettering with a soft glow. The price sits underneath.</p>
+      <p class="lookbook">Italic serif over the photo, with the price in small gold type.</p>
+      <p class="ticket">A cream label with a bold name and a separate receipt-style price.</p>
+    </div>
+    <section class="products" aria-label="Tee card previews">
+      <article>
+        <img src="assets/optimized/mesh-640.webp" width="640" height="960" alt="Model wearing the V Star Mesh Tee">
+        <div class="caption"><h2>V Star Mesh Tee</h2><p class="price">$60.00</p></div>
+      </article>
+      <article>
+        <img src="assets/optimized/badge-640.webp" width="640" height="960" alt="Model wearing the Black Badge Tee">
+        <div class="caption"><h2>Black Badge Tee</h2><p class="price">$50.00</p></div>
+      </article>
+    </section>
+  </div>
+</main>
+<script>
+  function selectLettering() {
+    const option = document.getElementById(location.hash.slice(1));
+    if (option?.matches('input[name="lettering"]')) option.checked = true;
+  }
+  selectLettering();
+  window.addEventListener('hashchange', selectLettering);
+  for (const input of document.querySelectorAll('input[name="lettering"]')) {
+    input.addEventListener('change', () => history.replaceState(null, '', '#' + input.value));
+  }
+</script>
+</body>
+</html>
